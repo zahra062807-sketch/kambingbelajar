@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BelajarBareng.id</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f0f2f5;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #4CAF50, #2ecc71);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: center;
+  background: #222;
+}
+
+nav button {
+  margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* CARD */
+.content {
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  max-width: 600px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* INPUT */
+input {
+  padding: 10px;
+  width: 80%;
+  margin: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* BUTTON */
+button.action {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #222;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>BelajarBareng.id</h1>
+  <p>Platform Belajar Gratis untuk Semua 🎓</p>
+</header>
+
+<nav>
+  <button onclick="showSection('login')">Login</button>
+  <button onclick="showSection('class')">Live Class</button>
+  <button onclick="showSection('ai')">AI Tutor</button>
+  <button onclick="showSection('leaderboard')">Leaderboard</button>
+</nav>
+
+<!-- LOGIN -->
+<section id="login" class="content">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Nama kamu">
+  <br>
+  <button class="action" onclick="login()">Masuk</button>
+  <p id="loginStatus"></p>
+</section>
+
+<!-- LIVE CLASS -->
+<section id="class" class="content" style="display:none;">
+  <h2>Live Class (Zoom)</h2>
+  <p>📘 Matematika - Senin 16:00</p>
+  <a href="https://zoom.us/" target="_blank">
+    <button class="action">Masuk Kelas</button>
+  </a>
+</section>
+
+<!-- AI TUTOR -->
+<section id="ai" class="content" style="display:none;">
+  <h2>AI Tutor 🤖</h2>
+  <input type="text" id="question" placeholder="Tanya soal...">
+  <br>
+  <button class="action" onclick="askAI()">Tanya</button>
+  <p id="answer"></p>
+</section>
+
+<!-- LEADERBOARD -->
+<section id="leaderboard" class="content" style="display:none;">
+  <h2>Leaderboard 🏆</h2>
+  <ul id="leaderboardList"></ul>
+</section>
+
+<footer>
+  <p>⭐ Poin: <span id="points">0</span></p>
+</footer>
+
+<script>
+let user = localStorage.getItem("user") || "";
+let points = parseInt(localStorage.getItem("points")) || 0;
+
+// LOGIN
+function login() {
+  let username = document.getElementById("username").value;
+  if (!username) return;
+
+  user = username;
+  localStorage.setItem("user", user);
+  document.getElementById("loginStatus").innerText = "Login sebagai " + user;
+}
+
+// NAV
+function showSection(id) {
+  document.querySelectorAll('.content').forEach(sec => {
+    sec.style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+}
+
+// AI TUTOR (REAL API)
+async function askAI() {
+  let question = document.getElementById("question").value;
+
+  document.getElementById("answer").innerText = "Loading...";
+
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer API_KEY_KAMU",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: question }]
+      })
+    });
+
+    const data = await res.json();
+    const answer = data.choices[0].message.content;
+
+    document.getElementById("answer").innerText = answer;
+
+    // tambah poin
+    points += 10;
+    localStorage.setItem("points", points);
+    document.getElementById("points").innerText = points;
+
+    updateLeaderboard();
+
+  } catch (err) {
+    document.getElementById("answer").innerText = "Error API 😢";
+  }
+}
+
+// LEADERBOARD
+function updateLeaderboard() {
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+  let existing = leaderboard.find(u => u.name === user);
+  if (existing) {
+    existing.points = points;
+  } else {
+    leaderboard.push({ name: user, points: points });
+  }
+
+  leaderboard.sort((a, b) => b.points - a.points);
+  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+  let list = document.getElementById("leaderboardList");
+  list.innerHTML = "";
+
+  leaderboard.forEach((u, i) => {
+    let li = document.createElement("li");
+    li.innerText = `${i+1}. ${u.name} - ${u.points} poin`;
+    list.appendChild(li);
+  });
+}
+
+// INIT
+document.getElementById("points").innerText = points;
+renderLeaderboard();
+</script>
+
+</body>
+</html>
