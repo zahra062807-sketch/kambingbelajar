@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Daftar - BelajarBareng.id</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .toggle-link { color: #4CAF50; cursor: pointer; text-decoration: underline; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BelajarBareng.id</h1>
+        <p>Akses ke Masa Depanmu 🚀</p>
+    </header>
+
+    <nav>
+        <a href="index.html"><button>Home</button></a>
+    </nav>
+
+    <!-- FORM LOGIN -->
+<section id="loginForm" class="content">
+    <h2>Masuk (Login)</h2>
+    <input type="text" id="loginUser" placeholder="Nama pengguna">
+    <input type="password" id="loginPass" placeholder="Kata sandi"> <!-- Input Password -->
+    <br>
+    <button class="action" onclick="handleLogin()">Masuk Sekarang</button>
+    <p>Belum punya akun? <span class="toggle-link" onclick="toggleAuth()">Daftar di sini</span></p>
+    <p id="loginStatus"></p>
+</section>
+
+<!-- FORM DAFTAR -->
+<section id="registerForm" class="content hidden">
+    <h2>Daftar Akun Baru</h2>
+    <input type="text" id="regUser" placeholder="Pilih nama pengguna">
+    <input type="password" id="regPass" placeholder="Buat kata sandi"> <!-- Input Password -->
+    <br>
+    <button class="action" style="background: #2ecc71;" onclick="handleRegister()">Buat Akun</button>
+    <p>Sudah punya akun? <span class="toggle-link" onclick="toggleAuth()">Login di sini</span></p>
+    <p id="regStatus"></p>
+</section>
+
+    <footer>
+        <p>⭐ Poin Anda: <span id="points">0</span></p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Fungsi khusus halaman ini untuk pindah tampilan
+        function toggleAuth() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
