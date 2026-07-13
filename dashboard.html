@@ -248,6 +248,136 @@
       </div>
       <div class="xp-stats">
         <div class="xp-stat">
+          <div class="val" id="statHari">0</div>
+          <div class="lbl">Hari Belajar</div>
+        </div>
+        <div class="xp-stat">
+          <div class="val" id="statSoal">0</div>
+          <div class="lbl">Soal Dikerjakan</div>
+        </div>
+        <div class="xp-stat">
+          <div class="val" id="statRank">#—</div>
+          <div class="lbl">Peringkat</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MOTIVASI ══ -->
+    <div class="motivasi reveal" style="margin-bottom: 2rem;" id="motivasiBanner">
+      <div class="mot-icon">🤖</div>
+      <div class="mot-text">
+        <h3>Ada yang bingung? Tanya AI Tutor!</h3>
+        <p>AI Tutor siap membantu kamu memahami materi kapan saja — gratis!</p>
+      </div>
+      <a href="tutor.html" class="mot-btn">Tanya Sekarang →</a>
+    </div>
+
+    <!-- ══ QUICK ACTIONS ══ -->
+    <div class="section-label" style="position:relative;z-index:1;margin-bottom:.75rem;">Menu Cepat</div>
+    <div class="quick-grid reveal" style="margin-bottom:2.5rem;">
+      <a href="materi.html" class="quick-card">
+        <span class="qc-icon">📚</span>
+        <div class="qc-label">Materi</div>
+        <div class="qc-sub">Lanjut belajar</div>
+      </a>
+      <a href="latihan.html" class="quick-card">
+        <span class="qc-icon">✏️</span>
+        <div class="qc-label">Latihan Soal</div>
+        <div class="qc-sub">Asah kemampuan</div>
+      </a>
+      <a href="tutor.html" class="quick-card">
+        <span class="qc-icon">🤖</span>
+        <div class="qc-label">AI Tutor</div>
+        <div class="qc-sub">Tanya apa saja</div>
+      </a>
+      <a href="leaderboard.html" class="quick-card">
+        <span class="qc-icon">🏆</span>
+        <div class="qc-label">Leaderboard</div>
+        <div class="qc-sub">Cek peringkatmu</div>
+      </a>
+    </div>
+
+    <!-- ══ MATERI + LEADERBOARD ══ -->
+    <div class="two-col">
+
+      <!-- Materi -->
+      <div>
+        <div class="section-label" style="position:relative;z-index:1;margin-bottom:.75rem;">Materi Kelasmu</div>
+        <div class="materi-grid reveal" id="materiGrid">
+          <!-- diisi JS berdasarkan kelas -->
+        </div>
+      </div>
+
+      <!-- Leaderboard mini -->
+      <div class="reveal">
+        <div class="section-label" style="position:relative;z-index:1;margin-bottom:.75rem;">Peringkat Minggu Ini</div>
+        <div class="lb-mini">
+          <div class="lb-mini-head">
+            🏆 Top Pelajar
+            <a href="leaderboard.html">Lihat semua →</a>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank gold">1</div>
+            <div class="av" style="background:rgba(251,191,36,.15);">👑</div>
+            <div class="nm">Anindita R. <small>SMA Yogyakarta</small></div>
+            <div class="xp-val">12.450</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank silver">2</div>
+            <div class="av" style="background:rgba(148,163,184,.1);">🌟</div>
+            <div class="nm">Bagas P. <small>SMPN Surabaya</small></div>
+            <div class="xp-val">11.800</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank bronze">3</div>
+            <div class="av" style="background:rgba(205,127,50,.1);">⚡</div>
+            <div class="nm">Siti N. <small>SMA Bandung</small></div>
+            <div class="xp-val">10.990</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank">4</div>
+            <div class="av" style="background:rgba(124,58,237,.1);">🚀</div>
+            <div class="nm">Kevin S. <small>SMA Semarang</small></div>
+            <div class="xp-val">9.750</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank">5</div>
+            <div class="av" style="background:rgba(59,130,246,.1);">🎯</div>
+            <div class="nm">Putri M. <small>SMPN Medan</small></div>
+            <div class="xp-val">9.310</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
+    © 2025 BelajarBareng.id · Dibuat dengan ❤️ untuk pelajar Indonesia 🇮🇩
+  </footer>
+
+  <script>
+    // ── Auth guard ──
+    const raw = localStorage.getItem('bb_current');
+    if (!raw) window.location.href = 'login.html';
+    const user = JSON.parse(raw || '{}');
+    if (user.role === 'guru_ortu') window.location.href = 'dashboard-guru.html'; // akun guru/ortu nyasar, lempar balik
+
+    // ── Greeting ──
+    const firstName = (user.nama || 'Pelajar').split(' ')[0];
+    document.getElementById('greetName').textContent   = firstName;
+
+    // Greeting message berdasarkan jam
+    const hour = new Date().getHours();
+    const greetMsg = hour < 11 ? 'Selamat pagi! Mulai hari dengan semangat belajar 🌅'
+                   : hour < 15 ? 'Selamat siang! Waktunya belajar yang produktif ☀️'
+                   : hour < 18 ? 'Selamat sore! Jangan lupa review materi hari ini 📖'
+                   :             'Selamat malam! AI Tutor siap menemanimu belajar 🌙';
+    document.getElementById('greetSub').textContent = greetMsg;
+
+    // ── XP & Level ──
+    const xp = parseInt(user.xp || 0);
     </style>
     </head>
     </html>
