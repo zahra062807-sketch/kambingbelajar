@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – BelajarBareng.id</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── LAYOUT ── */
+    .dash-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* ── GREETING ── */
+    .greeting {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .greeting h1 {
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 800; line-height: 1.2;
+    }
+    .greeting h1 span { display: block; }
+    .greeting h1 .name {
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .greeting p { color: var(--muted); font-size: .9rem; margin-top: .3rem; }
+
+    .profile-chip {
+      display: flex; align-items: center; gap: .75rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 999px; padding: .5rem 1rem .5rem .6rem;
+    }
+    .profile-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .profile-info { line-height: 1.3; }
+    .profile-info .pname { font-size: .875rem; font-weight: 700; }
+    .profile-info .pkelas { font-size: .75rem; color: var(--muted); }
+
+    /* ── XP BAR ── */
+    .xp-bar-wrap {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .xp-main { flex: 1; min-width: 200px; }
+    .xp-label {
+      display: flex; justify-content: space-between;
+      font-size: .8rem; margin-bottom: .5rem;
+    }
+    .xp-label .lvl { font-weight: 800; color: var(--purple-light); }
+    .xp-label .pts { color: var(--muted); }
+    .xp-track {
+      height: 10px; background: var(--bg);
+      border-radius: 999px; overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      transition: width 1s ease;
+      box-shadow: 0 0 10px rgba(124,58,237,.5);
+    }
+    .xp-next { font-size: .75rem; color: var(--muted); margin-top: .4rem; }
+
+    .xp-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .xp-stat { text-align: center; }
+    .xp-stat .val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .xp-stat .lbl { font-size: .72rem; color: var(--muted); margin-top: .1rem; }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .quick-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.25rem 1rem;
+      text-align: center; text-decoration: none; color: inherit;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      display: block;
+    }
+    .quick-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(124,58,237,.2);
+      border-color: var(--purple);
+    }
+    .quick-card .qc-icon { font-size: 2rem; margin-bottom: .6rem; display: block; }
+    .quick-card .qc-label { font-size: .85rem; font-weight: 700; }
+    .quick-card .qc-sub   { font-size: .72rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── MATERI SECTION ── */
+    .materi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.1rem;
+    }
+    .materi-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+      text-decoration: none; color: inherit;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+    .materi-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--purple);
+      box-shadow: 0 10px 28px rgba(124,58,237,.18);
+    }
+    </style>
+    </head>
+    </html>
