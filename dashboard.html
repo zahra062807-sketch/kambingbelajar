@@ -378,6 +378,120 @@
 
     // ── XP & Level ──
     const xp = parseInt(user.xp || 0);
+     const levels = [
+      { name: 'Pemula',     min: 0,    max: 500  },
+      { name: 'Pelajar',    min: 500,  max: 1500 },
+      { name: 'Mahir',      min: 1500, max: 3000 },
+      { name: 'Juara',      min: 3000, max: 6000 },
+      { name: 'Legenda',    min: 6000, max: 10000},
+    ];
+    const lvl  = levels.findIndex(l => xp >= l.min && xp < l.max);
+    const curLvl  = lvl === -1 ? levels[levels.length-1] : levels[lvl];
+    const nextLvl = levels[Math.min(lvl+1, levels.length-1)];
+    const pct  = Math.min(((xp - curLvl.min) / (curLvl.max - curLvl.min)) * 100, 100);
+
+    document.getElementById('xpLevel').textContent   = `Level ${lvl+1} — ${curLvl.name}`;
+    document.getElementById('xpCurrent').textContent = xp.toLocaleString('id-ID');
+    document.getElementById('xpNext').textContent    = `${(curLvl.max - xp).toLocaleString('id-ID')} XP lagi untuk naik ke Level ${lvl+2}`;
+    setTimeout(() => document.getElementById('xpFill').style.width = pct + '%', 300);
+
+    document.getElementById('statHari').textContent = user.hariAktif || '1';
+    document.getElementById('statSoal').textContent = user.soalDikerjakan || '0';
+    document.getElementById('statRank').textContent = '#' + (user.rank || '—');
+
+    // ── Materi per kelas ──
+    const materiData = {
+      'SMP': {
+        'Kelas 7':  [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Bilangan, Aljabar, Geometri', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'IPA',        sub:'Makhluk Hidup, Zat & Energi', prog: 0 },
+          { icon:'🌏', bg:'rgba(16,185,129,.15)',  nama:'IPS',        sub:'Geografi, Sejarah, Ekonomi', prog: 0 },
+          { icon:'📝', bg:'rgba(236,72,153,.15)',  nama:'B. Indonesia',sub:'Teks, Sastra, Kaidah Bahasa', prog: 0 },
+          { icon:'🌍', bg:'rgba(251,191,36,.15)',  nama:'B. Inggris', sub:'Grammar, Vocabulary, Reading', prog: 0 },
+          { icon:'⚖️', bg:'rgba(239,68,68,.12)',   nama:'PKn',        sub:'Pancasila, Kewarganegaraan', prog: 0 },
+        ],
+        'Kelas 8':  [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'SPLDV, Pythagoras, Statistika', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'IPA',        sub:'Gerak, Gaya, Cahaya, Bunyi', prog: 0 },
+          { icon:'🌏', bg:'rgba(16,185,129,.15)',  nama:'IPS',        sub:'Interaksi Sosial, Ekonomi', prog: 0 },
+          { icon:'📝', bg:'rgba(236,72,153,.15)',  nama:'B. Indonesia',sub:'Teks Eksposisi, Puisi, Novel', prog: 0 },
+          { icon:'🌍', bg:'rgba(251,191,36,.15)',  nama:'B. Inggris', sub:'Narrative, Report Text', prog: 0 },
+          { icon:'⚖️', bg:'rgba(239,68,68,.12)',   nama:'PKn',        sub:'Hukum, HAM, Demokrasi', prog: 0 },
+        ],
+        'Kelas 9':  [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Bangun Ruang, Transformasi, Statistik', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'IPA',        sub:'Listrik, Kemagnetan, Bioteknologi', prog: 0 },
+          { icon:'🌏', bg:'rgba(16,185,129,.15)',  nama:'IPS',        sub:'Globalisasi, Ekonomi Kreatif', prog: 0 },
+          { icon:'📝', bg:'rgba(236,72,153,.15)',  nama:'B. Indonesia',sub:'Teks Diskusi, Cerpen, Pidato', prog: 0 },
+          { icon:'🌍', bg:'rgba(251,191,36,.15)',  nama:'B. Inggris', sub:'Analytical Exposition, Drama', prog: 0 },
+          { icon:'🎓', bg:'rgba(239,68,68,.12)',   nama:'Persiapan UN',sub:'Latihan Soal & Try Out', prog: 0 },
+        ],
+      },
+      'SMA': {
+        'Kelas 10': [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Fungsi, Trigonometri, Eksponen', prog: 0 },
+          { icon:'⚗️', bg:'rgba(16,185,129,.15)',  nama:'Kimia',      sub:'Struktur Atom, Ikatan Kimia', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'Fisika',     sub:'Gerak, Vektor, Hukum Newton', prog: 0 },
+          { icon:'🧬', bg:'rgba(236,72,153,.15)',  nama:'Biologi',    sub:'Sel, Jaringan, Keanekaragaman Hayati', prog: 0 },
+          { icon:'📝', bg:'rgba(251,191,36,.15)',  nama:'B. Indonesia',sub:'Teks Laporan, Anekdot, Hikayat', prog: 0 },
+          { icon:'🌍', bg:'rgba(239,68,68,.12)',   nama:'B. Inggris', sub:'Descriptive, Analytical Text', prog: 0 },
+        ],
+        'Kelas 11': [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Integral, Limit, Barisan Deret', prog: 0 },
+          { icon:'⚗️', bg:'rgba(16,185,129,.15)',  nama:'Kimia',      sub:'Termokimia, Laju Reaksi, Kesetimbangan', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'Fisika',     sub:'Fluida, Termodinamika, Gelombang', prog: 0 },
+          { icon:'🧬', bg:'rgba(236,72,153,.15)',  nama:'Biologi',    sub:'Sistem Organ, Metabolisme, Genetika', prog: 0 },
+          { icon:'📝', bg:'rgba(251,191,36,.15)',  nama:'B. Indonesia',sub:'Teks Prosedur, Eksplanasi, Cerpen', prog: 0 },
+          { icon:'🌍', bg:'rgba(239,68,68,.12)',   nama:'B. Inggris', sub:'Cause-Effect, Hortatory Text', prog: 0 },
+        ],
+        'Kelas 12': [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Statistika, Peluang, Review UN', prog: 0 },
+          { icon:'⚗️', bg:'rgba(16,185,129,.15)',  nama:'Kimia',      sub:'Elektrokimia, Polimer, Review', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'Fisika',     sub:'Listrik Statis, Relativitas, Inti Atom', prog: 0 },
+          { icon:'🧬', bg:'rgba(236,72,153,.15)',  nama:'Biologi',    sub:'Evolusi, Bioteknologi, Review', prog: 0 },
+          { icon:'📝', bg:'rgba(251,191,36,.15)',  nama:'B. Indonesia',sub:'Teks Ulasan, Editorial, Review', prog: 0 },
+          { icon:'🎓', bg:'rgba(239,68,68,.12)',   nama:'Persiapan SNBT', sub:'TPS, Literasi, Penalaran Mat', prog: 0 },
+        ],
+      },
+    };
+
+    const kelasMateri = (materiData[user.jenjang] || {})[user.kelas] || [];
+    const grid = document.getElementById('materiGrid');
+
+    if (kelasMateri.length === 0) {
+      grid.innerHTML = '<p style="color:var(--muted);font-size:.9rem;">Materi belum tersedia untuk kelasmu.</p>';
+    } else {
+      grid.innerHTML = kelasMateri.map(m => `
+        <a href="materi.html" class="materi-card">
+          <div class="materi-icon" style="background:${m.bg}">${m.icon}</div>
+          <div class="materi-info">
+            <h3>${m.nama}</h3>
+            <p>${m.sub}</p>
+            <div class="materi-progress">
+              <div class="materi-progress-fill" style="width:${m.prog}%"></div>
+            </div>
+          </div>
+          <div class="materi-arrow">›</div>
+        </a>
+      `).join('');
+    }
+
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+
+    // ── Logout ──
+    function doLogout() {
+      localStorage.removeItem('bb_current');
+      window.location.href = 'index.html';
+    }
+  </script>
+  <script src="auth-nav.js"></script>
+</body>
     </style>
     </head>
     </html>
+    
