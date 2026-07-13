@@ -154,5 +154,48 @@
       <h1>👨‍🏫 Dashboard Guru / Orang Tua</h1>
       <p>Pantau progress belajar semua siswa yang terdaftar</p>
     </div>
+
+    <div class="stat-row reveal">
+      <div class="stat-box">
+        <div class="num" id="statTotal">0</div>
+        <div class="lbl">Total Siswa Terdaftar</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statAvgXp">0</div>
+        <div class="lbl">Rata-rata XP</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statSMP">0</div>
+        <div class="lbl">Siswa SMP</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statSMA">0</div>
+        <div class="lbl">Siswa SMA</div>
+      </div>
+    </div>
+
+    <div class="toolbar reveal">
+      <input type="text" id="searchInput" placeholder="🔍 Cari nama siswa..." />
+      <select id="filterKelas">
+        <option value="">Semua Kelas</option>
+        <option>Kelas 7</option><option>Kelas 8</option><option>Kelas 9</option>
+        <option>Kelas 10</option><option>Kelas 11</option><option>Kelas 12</option>
+      </select>
+    </div>
+
+    <div class="siswa-table reveal">
+      <div class="siswa-row head">
+        <div></div>
+        <div>Nama Siswa</div>
+        <div>Sekolah</div>
+        <div>Kelas</div>
+        <div>XP</div>
+        <div>Level</div>
+      </div>
+      <div id="siswaList"></div>
+    </div>
+
+  </div>
+
 </body>
 </html>
