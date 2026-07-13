@@ -1,35 +1,330 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - BelajarBareng.id</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BelajarBareng.id – Platform Belajar Gratis untuk Pelajar Indonesia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── KEUNGGULAN CARDS ── */
+    .unggulan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .unggulan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .unggulan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(124,58,237,.2);
+    }
+    .unggulan-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      border-radius: 20px 20px 0 0;
+    }
+    .unggulan-card.c1::before { background: linear-gradient(90deg, var(--purple), var(--blue)); }
+    .unggulan-card.c2::before { background: linear-gradient(90deg, var(--blue), #10B981); }
+    .unggulan-card.c3::before { background: linear-gradient(90deg, var(--yellow), var(--pink)); }
+    .unggulan-card.c4::before { background: linear-gradient(90deg, var(--pink), var(--purple)); }
+    .unggulan-card.c5::before { background: linear-gradient(90deg, #10B981, var(--blue)); }
+
+    .unggulan-icon {
+      font-size: 2.2rem; margin-bottom: 1rem; display: block;
+    }
+    .unggulan-card h3 {
+      font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem;
+    }
+    .unggulan-card p {
+      font-size: .875rem; color: var(--muted); line-height: 1.65;
+    }
+    .unggulan-label {
+      display: inline-block;
+      font-size: .7rem; font-weight: 700;
+      padding: .25rem .65rem; border-radius: 999px;
+      margin-top: .9rem;
+    }
+
+    /* ── TESTIMONIAL ── */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .testi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem;
+    }
+    .testi-stars { color: var(--yellow); font-size: .9rem; margin-bottom: .75rem; }
+    .testi-text  { font-size: .875rem; color: var(--text); line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+    .testi-user  { display: flex; align-items: center; gap: .65rem; }
+    .testi-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .testi-name  { font-weight: 700; font-size: .875rem; }
+    .testi-kelas { font-size: .75rem; color: var(--muted); }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      counter-reset: step;
+    }
+    .step {
+      text-align: center; padding: 1.5rem 1rem;
+      position: relative;
+    }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      margin: 0 auto 1rem;
+      box-shadow: 0 0 20px rgba(124,58,237,.4);
+    }
+    .step h3 { font-size: .95rem; font-weight: 700; margin-bottom: .4rem; }
+    .step p  { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+
+    /* connector line between steps (desktop) */
+    @media (min-width: 700px) {
+      .step:not(:last-child)::after {
+        content: '→';
+        position: absolute; right: -1rem; top: 1.35rem;
+        color: var(--border); font-size: 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>BelajarBareng.id</h1>
-        <p>Platform Belajar Gratis untuk Semua 🎓</p>
-    </header>
 
-    <nav>
-        <a href="index.html"><button>Home</button></a>
-        <a href="login.html"><button>Login/Sign Up</button></a>
-        <a href="class.html"><button>Live Class</button></a>
-        <a href="tutor.html"><button>AI Tutor</button></a>
-        <a href="leaderboard.html"><button>Leaderboard</button></a>
-    </nav>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
 
-    <section class="content">
-        <h2>Selamat Datang!</h2>
-        <p>Halo <span id="displayUser">Pelajar</span>, siap untuk belajar hari ini?</p>
-        <p>Gunakan menu di atas untuk mengakses kelas, bertanya pada AI, atau melihat peringkatmu.</p>
-    </section>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-links">
+      <a href="#keunggulan">Keunggulan</a>
+      <a href="#cara-kerja">Cara Kerja</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="login.html" class="btn-nav">Masuk →</a>
+    </div>
+  </nav>
 
-    <footer>
-        <p>⭐ Poin: <span id="points">0</span></p>
-    </footer>
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="badge"><span class="dot"></span> 100% Gratis · Tanpa Iklan · Tanpa Biaya</div>
+    <h1>Belajar itu<br><span class="gradient-text">seru kalau bareng</span> ✨</h1>
+    <p>Platform belajar khusus pelajar SMP &amp; SMA Indonesia. Materi sesuai kelasmu, AI Tutor siap 24 jam, dan tantangan seru antar sekolah se-Indonesia.</p>
+    <div class="hero-cta">
+      <a href="login.html" class="btn-primary">🚀 Mulai Gratis Sekarang</a>
+      <a href="#keunggulan" class="btn-secondary">Pelajari Lebih Lanjut ↓</a>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- ══ KEUNGGULAN ══ -->
+  <div class="section reveal" id="keunggulan">
+    <div class="section-label">Kenapa BelajarBareng.id?</div>
+    <div class="section-title">Beda dari platform belajar lain 🎯</div>
+    <div class="unggulan-grid">
+
+      <div class="unggulan-card c1">
+        <span class="unggulan-icon">🎯</span>
+        <h3>Materi Sesuai Kelasmu</h3>
+        <p>Tidak ada materi kelas lain yang bikin bingung. Setelah daftar, kamu hanya lihat materi yang relevan untuk kelasmu — fokus, tidak berantakan.</p>
+        <span class="unggulan-label" style="background: rgba(124,58,237,.2); color: var(--purple-light);">Terstruktur</span>
+      </div>
+
+      <div class="unggulan-card c2">
+        <span class="unggulan-icon">🤖</span>
+        <h3>AI Tutor 24 Jam</h3>
+        <p>Bingung soal fisika jam 11 malam padahal ujian besok? AI Tutor kami siap membantu kapan saja — tidak perlu tunggu guru atau les tambahan.</p>
+        <span class="unggulan-label" style="background: rgba(16,185,129,.15); color: #6EE7B7;">Siap kapan saja</span>
+      </div>
+
+      <div class="unggulan-card c3">
+        <span class="unggulan-icon">🏆</span>
+        <h3>Belajar Sambil Bersaing</h3>
+        <p>Setiap kali belajar kamu dapat XP. Naik level, raih badge, dan lihat namamu di leaderboard nasional. Belajar jadi terasa seperti main game!</p>
+        <span class="unggulan-label" style="background: rgba(251,191,36,.15); color: var(--yellow);">Gamifikasi</span>
+      </div>
+
+      <div class="unggulan-card c4">
+        <span class="unggulan-icon">🆓</span>
+        <h3>Gratis Selamanya</h3>
+        <p>Tidak ada paket premium, tidak ada iklan, tidak ada biaya tersembunyi. Semua fitur terbuka untuk semua pelajar Indonesia — tanpa terkecuali.</p>
+        <span class="unggulan-label" style="background: rgba(236,72,153,.15); color: #F9A8D4;">Tanpa bayar</span>
+      </div>
+
+      <div class="unggulan-card c5">
+        <span class="unggulan-icon">🇮🇩</span>
+        <h3>Komunitas Pelajar Indonesia</h3>
+        <p>Bersaing dan belajar bareng pelajar dari Sabang sampai Merauke. Lihat bagaimana posisimu dibanding teman-teman satu angkatan se-Indonesia.</p>
+        <span class="unggulan-label" style="background: rgba(16,185,129,.15); color: #6EE7B7;">Nasional</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ CARA KERJA ══ -->
+  <div class="section reveal" id="cara-kerja">
+    <div class="section-label">Cara Kerja</div>
+    <div class="section-title">Mulai dalam 3 langkah mudah 🚀</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Daftar Gratis</h3>
+        <p>Buat akun dengan email atau Google. Pilih jenjang dan kelasmu — SMP atau SMA, kelas berapa.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Akses Materi Kelasmu</h3>
+        <p>Langsung masuk ke dashboard. Semua materi, latihan soal, dan AI Tutor sudah disesuaikan dengan kelasmu.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Belajar & Naik Peringkat</h3>
+        <p>Kerjakan latihan, tanya AI Tutor, kumpulkan XP, dan buktikan siapa yang terbaik di leaderboard!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LEADERBOARD PREVIEW ══ -->
+  <div class="section reveal" id="leaderboard">
+    <div class="section-label">Leaderboard</div>
+    <div class="section-title">Top pelajar minggu ini 🔥</div>
+    <div class="lboard">
+      <div class="lboard-head">🏆 Peringkat Nasional — Minggu Ini</div>
+
+      <div class="lboard-row">
+        <div class="rank gold">1</div>
+        <div class="avatar" style="background: rgba(251,191,36,.15);">👑</div>
+        <div>
+          <div class="lboard-name">Anindita R.</div>
+          <div class="lboard-sub">SMA 1 Yogyakarta · Kelas 11</div>
+        </div>
+        <div class="lboard-pts">12.450 XP</div>
+      </div>
+
+      <div class="lboard-row">
+        <div class="rank silver">2</div>
+        <div class="avatar" style="background: rgba(148,163,184,.1);">🌟</div>
+        <div>
+          <div class="lboard-name">Bagas Pratama</div>
+          <div class="lboard-sub">SMPN 5 Surabaya · Kelas 9</div>
+        </div>
+        <div class="lboard-pts">11.800 XP</div>
+      </div>
+
+      <div class="lboard-row">
+        <div class="rank bronze">3</div>
+        <div class="avatar" style="background: rgba(205,127,50,.1);">⚡</div>
+        <div>
+          <div class="lboard-name">Siti Nurhaliza</div>
+          <div class="lboard-sub">SMA 3 Bandung · Kelas 12</div>
+        </div>
+        <div class="lboard-pts">10.990 XP</div>
+      </div>
+
+      <div class="lboard-row">
+        <div class="rank">4</div>
+        <div class="avatar" style="background: rgba(124,58,237,.1);">🚀</div>
+        <div>
+          <div class="lboard-name">Kevin Santoso</div>
+          <div class="lboard-sub">SMA 2 Semarang · Kelas 10</div>
+        </div>
+        <div class="lboard-pts">9.750 XP</div>
+      </div>
+
+      <div class="lboard-row">
+        <div class="rank">5</div>
+        <div class="avatar" style="background: rgba(59,130,246,.1);">🎯</div>
+        <div>
+          <div class="lboard-name">Putri Melati</div>
+          <div class="lboard-sub">SMPN 2 Medan · Kelas 8</div>
+        </div>
+        <div class="lboard-pts">9.310 XP</div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 1rem; font-size: .82rem; color: var(--muted);">
+      Daftar sekarang dan mulai kumpulkan XP untuk masuk leaderboard! 👆
+    </p>
+  </div>
+
+  <!-- ══ TESTIMONIAL ══ -->
+  <div class="section reveal">
+    <div class="section-label">Kata Mereka</div>
+    <div class="section-title">Pelajar yang sudah merasakan manfaatnya 💬</div>
+    <div class="testi-grid">
+
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Akhirnya ada platform belajar yang materinya tidak campur-campur. Sesuai kelas, jadi lebih fokus belajarnya!"</p>
+        <div class="testi-user">
+          <div class="testi-avatar" style="background: rgba(124,58,237,.15);">😊</div>
+          <div>
+            <div class="testi-name">Rafi A.</div>
+            <div class="testi-kelas">SMA Kelas 11 · Bandung</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"AI Tutornya keren banget! Tanya soal matematika jam 12 malam langsung dijawab dengan penjelasan yang mudah dimengerti."</p>
+        <div class="testi-user">
+          <div class="testi-avatar" style="background: rgba(59,130,246,.15);">🙋</div>
+          <div>
+            <div class="testi-name">Dewi S.</div>
+            <div class="testi-kelas">SMP Kelas 9 · Surabaya</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Leaderboard-nya bikin semangat! Tiap hari pengen belajar terus biar bisa naik peringkat. Belajar jadi kayak game!"</p>
+        <div class="testi-user">
+          <div class="testi-avatar" style="background: rgba(251,191,36,.15);">🏆</div>
+          <div>
+            <div class="testi-name">Zaki M.</div>
+            <div class="testi-kelas">SMA Kelas 10 · Jakarta</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ CTA BANNER ══ -->
+  <div class="cta-banner reveal">
+    <h2>Siap belajar lebih cerdas? 🚀</h2>
+    <p>Gratis selamanya. Daftar sekarang dan mulai perjalanan belajarmu hari ini.</p>
+    <a href="login.html" class="btn-primary" style="font-size: 1rem; padding: .9rem 2.5rem;">Daftar Gratis Sekarang →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 BelajarBareng.id · Dibuat dengan ❤️ untuk pelajar Indonesia 🇮🇩</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="auth-nav.js"></script>
 </body>
 </html>
