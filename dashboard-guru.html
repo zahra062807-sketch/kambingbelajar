@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Guru/Orang Tua – BelajarBareng.id</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    .page-head { margin-bottom: 2rem; }
+    .page-head h1 { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 800; margin-bottom: .3rem; }
+    .page-head p  { color: var(--muted); font-size: .9rem; }
+
+    /* ── STAT CARDS ── */
+    .stat-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .stat-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.25rem;
+    }
+    .stat-box .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-box .lbl { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex; gap: .75rem; flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .toolbar input, .toolbar select {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: .65rem 1rem;
+      color: var(--text); font-family: inherit; font-size: .85rem;
+      outline: none;
+    }
+    .toolbar input { flex: 1; min-width: 200px; }
+    .toolbar input:focus, .toolbar select:focus { border-color: var(--purple); }
+
+    /* ── SISWA TABLE ── */
+    .siswa-table {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+    }
+    .siswa-row {
+      display: grid;
+      grid-template-columns: 40px 2fr 1.3fr 1fr 1fr .8fr;
+      align-items: center; gap: 1rem;
+      padding: .9rem 1.5rem;
+      border-bottom: 1px solid rgba(124,58,237,.1);
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .siswa-row:hover { background: rgba(124,58,237,.08); }
+    .siswa-row:last-child { border-bottom: none; }
+    .siswa-row.head {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .04em; color: var(--muted);
+      cursor: default; background: var(--card2);
+    }
+    .siswa-row.head:hover { background: var(--card2); }
+
+    .s-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; color: #fff;
+    }
+    .s-name-wrap { display: flex; align-items: center; gap: .7rem; }
+    .s-name { font-weight: 700; font-size: .875rem; }
+    .s-email { font-size: .72rem; color: var(--muted); }
+    .s-kelas { font-size: .82rem; color: var(--muted); }
+    .s-xp { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--yellow); font-size: .85rem; }
+
+    .badge-level {
+      display: inline-block; font-size: .7rem; font-weight: 700;
+      padding: .25rem .65rem; border-radius: 999px;
+      background: rgba(124,58,237,.2); color: var(--purple-light);
+      text-align: center;
+    }
+
+    .empty-state {
+      text-align: center; padding: 3rem 1.5rem; color: var(--muted); font-size: .9rem;
+    }
+
+    /* ── DETAIL MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem; max-width: 420px; width: 100%;
+      animation: fadeUp .3s ease both;
+    }
+    .modal-close {
+      float: right; background: transparent; border: none;
+      color: var(--muted); font-size: 1.3rem; cursor: pointer; line-height: 1;
+    }
+    .modal-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 700; color: #fff;
+      margin-bottom: 1rem;
+    }
+    .modal-box h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: .2rem; }
+    .modal-box .m-sub { font-size: .82rem; color: var(--muted); margin-bottom: 1.25rem; }
+    .modal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .modal-stats .box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: .85rem;
+    }
+    .modal-stats .box .n { font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.15rem; }
+    .modal-stats .box .l { font-size: .72rem; color: var(--muted); margin-top:.15rem; }
+
+    @media (max-width: 700px) {
+      .siswa-row { grid-template-columns: 32px 2fr 1fr; }
+      .s-kelas, .s-xp, .badge-level { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard Siswa</a>
+      <a href="dashboard-guru.html" class="btn-nav">Dashboard Guru/Ortu</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <div class="page-head reveal">
+      <h1>👨‍🏫 Dashboard Guru / Orang Tua</h1>
+      <p>Pantau progress belajar semua siswa yang terdaftar</p>
+    </div>
+</body>
+</html>
