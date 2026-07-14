@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengaturan Profil – BelajarBareng.id</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .profile-wrap {
+      position: relative; z-index: 1;
+      max-width: 720px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    .profile-header {
+      display: flex; align-items: center; gap: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .profile-header .big-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .profile-header h1 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; }
+    .profile-header p  { color: var(--muted); font-size: .875rem; margin-top: .2rem; }
+
+    .profile-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .profile-card h2 {
+      font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+
+    .field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      font-size: .78rem; font-weight: 700;
+      color: var(--muted); letter-spacing: .03em;
+    }
+    .field input, .field select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .75rem 1rem;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    .field input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,.15); }
+    .field input:disabled { opacity: .55; cursor: not-allowed; }
+    .field-hint { font-size: .74rem; color: var(--muted); }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+    .jenjang-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: .25rem; }
+    .jenjang-btn {
+      padding: .6rem; border-radius: 10px; text-align: center;
+      font-size: .875rem; font-weight: 700; cursor: pointer;
+      border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+      transition: all .2s;
+    }
+    .jenjang-btn.selected { background: rgba(124,58,237,.2); border-color: var(--purple); color: var(--purple-light); }
+
+    .kelas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+    .kelas-pill {
+      padding: .55rem .5rem; border-radius: 10px; text-align: center;
+      font-size: .82rem; font-weight: 700; cursor: pointer;
+      border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+      transition: all .2s;
+    }
+    .kelas-pill.selected { background: rgba(124,58,237,.2); border-color: var(--purple); color: var(--purple-light); }
+
+    .btn-save {
+      width: 100%; padding: .85rem;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; border: none; border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .92rem; font-weight: 700;
+      cursor: pointer; margin-top: .5rem;
+      transition: opacity .2s, transform .2s;
+      box-shadow: 0 0 20px rgba(124,58,237,.4);
+    }
+    .btn-save:hover { opacity: .9; transform: translateY(-1px); }
+
+    .save-msg {
+      display: none;
+      background: rgba(74,222,128,.15);
+      border: 1px solid rgba(74,222,128,.35);
+      border-radius: 10px; padding: .65rem 1rem;
+      font-size: .82rem; color: #86EFAC;
+      margin-bottom: 1.25rem;
+    }
+    .save-msg.show { display: block; }
+
+    .error-msg {
+      display: none;
+      background: rgba(239,68,68,.15);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: 10px; padding: .65rem 1rem;
+      font-size: .82rem; color: #FCA5A5;
+      margin-bottom: 1.25rem;
+    }
+    .error-msg.show { display: block; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .85rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 1.5rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="materi.html">Materi</a>
+      <a href="tutor.html">AI Tutor</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <div class="profile-wrap">
+
+    <a href="dashboard.html" class="back-link">← Kembali ke Dashboard</a>
+
+    <div class="profile-header">
+      <div class="big-avatar" id="bigAvatar">P</div>
+      <div>
+        <h1 id="headerName">Pengaturan Profil</h1>
+        <p>Kelola informasi akun dan preferensi belajarmu</p>
+      </div>
+    </div>
+
+    <div class="save-msg" id="saveMsg">✅ Perubahan berhasil disimpan!</div>
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- ══ DATA DIRI ══ -->
+    <div class="profile-card">
+      <h2>👤 Data Diri</h2>
+      <div class="field">
+        <label>NAMA LENGKAP</label>
+        <input type="text" id="pNama" placeholder="Nama kamu" />
+      </div>
+      <div class="field">
+        <label>EMAIL</label>
+        <input type="email" id="pEmail" disabled />
+        <div class="field-hint">Email tidak dapat diubah</div>
+      </div>
+      <div class="field">
+        <label id="labelSekolah">ASAL SEKOLAH</label>
+        <input type="text" id="pSekolah" placeholder="Nama sekolahmu" />
+      </div>
+    </div>
+
+    <!-- ══ JENJANG & KELAS (khusus siswa) ══ -->
+    <div class="profile-card" id="cardJenjangKelas">
+      <h2>🎓 Jenjang & Kelas</h2>
+      <div class="field">
+        <label>JENJANG</label>
+        <div class="jenjang-toggle">
+          <div class="jenjang-btn" id="btnSMP" onclick="pilihJenjang('SMP')">🏫 SMP</div>
+          <div class="jenjang-btn" id="btnSMA" onclick="pilihJenjang('SMA')">🎓 SMA</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>KELAS</label>
+        <div class="kelas-grid" id="kelasGrid"></div>
+      </div>
+    </div>
+
+    <!-- ══ UBAH PASSWORD ══ -->
+    <div class="profile-card">
+      <h2>🔒 Ubah Password</h2>
+      <div class="field">
+        <label>PASSWORD BARU</label>
+        <input type="password" id="pPasswordBaru" placeholder="Kosongkan jika tidak ingin mengubah" />
+        <div class="field-hint">Minimal 6 karakter. Kosongkan kalau tidak mau ganti password.</div>
+      </div>
+    </div>
+
+    <button class="btn-save" onclick="simpanProfil()">💾 Simpan Perubahan</button>
+
+  </div>
+
+  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
+    © 2025 BelajarBareng.id · Dibuat dengan ❤️ untuk pelajar Indonesia 🇮🇩
+  </footer>
+
+  <script>
+    // ── Auth guard ──
+    const raw = localStorage.getItem('bb_current');
+    if (!raw) window.location.href = 'login.html';
+    let user = JSON.parse(raw || '{}');
+
+    let selectedJenjang = user.jenjang || 'SMP';
+    let selectedKelas   = user.kelas || null;
+
+    const kelasList = {
+      SMP: ['Kelas 7', 'Kelas 8', 'Kelas 9'],
+      SMA: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+    };
+
+    const isGuru = user.role === 'guru_ortu';
+
+    function isiForm() {
+      const firstName = (user.nama || 'Pelajar').split(' ')[0];
+      document.getElementById('bigAvatar').textContent  = firstName[0]?.toUpperCase() || 'P';
+      document.getElementById('headerName').textContent = user.nama || 'Pengaturan Profil';
+      document.getElementById('pNama').value    = user.nama || '';
+      document.getElementById('pEmail').value   = user.email || '';
+      document.getElementById('pSekolah').value = user.sekolah && user.sekolah !== '-' ? user.sekolah : '';
+
+      if (isGuru) {
+        document.getElementById('cardJenjangKelas').style.display = 'none';
+        document.getElementById('labelSekolah').textContent = 'INSTANSI / SEKOLAH';
+        document.getElementById('pSekolah').placeholder = 'Nama sekolah/instansi';
+      } else {
+        pilihJenjang(selectedJenjang);
+      }
+    }
+
+    function pilihJenjang(j) {
+      selectedJenjang = j;
+      document.getElementById('btnSMP').classList.toggle('selected', j === 'SMP');
+      document.getElementById('btnSMA').classList.toggle('selected', j === 'SMA');
+      renderKelas();
+    }
+
+    function renderKelas() {
+      const grid = document.getElementById('kelasGrid');
+      grid.innerHTML = kelasList[selectedJenjang].map(k => `
+        <div class="kelas-pill ${k === selectedKelas ? 'selected' : ''}" onclick="pilihKelas(this, '${k}')">${k}</div>
+      `).join('');
+    }
+
+    function pilihKelas(el, kelas) {
+      document.querySelectorAll('.kelas-pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedKelas = kelas;
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = '⚠️ ' + msg;
+      el.classList.add('show');
+      document.getElementById('saveMsg').classList.remove('show');
+    }
+    function showSaved() {
+      document.getElementById('errorMsg').classList.remove('show');
+      const el = document.getElementById('saveMsg');
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    function simpanProfil() {
+      const nama = document.getElementById('pNama').value.trim();
+      const sekolah = document.getElementById('pSekolah').value.trim();
+      const passwordBaru = document.getElementById('pPasswordBaru').value;
+
+      if (!nama) return showError('Nama tidak boleh kosong.');
+      if (!isGuru && !selectedKelas) return showError('Pilih kelasmu terlebih dahulu.');
+      if (passwordBaru && passwordBaru.length < 6) return showError('Password baru minimal 6 karakter.');
+
+      user.nama    = nama;
+      user.sekolah = sekolah || '-';
+      if (!isGuru) {
+        user.jenjang = selectedJenjang;
+        user.kelas   = selectedKelas;
+      }
+      if (passwordBaru) user.password = passwordBaru;
+
+      // update juga di daftar bb_users
+      const users = JSON.parse(localStorage.getItem('bb_users') || '[]');
+      const idx = users.findIndex(u => u.email === user.email);
+      if (idx !== -1) users[idx] = user;
+      localStorage.setItem('bb_users', JSON.stringify(users));
+      localStorage.setItem('bb_current', JSON.stringify(user));
+
+      document.getElementById('pPasswordBaru').value = '';
+      isiForm();
+      showSaved();
+    }
+
+    function doLogout() {
+      localStorage.removeItem('bb_current');
+      window.location.href = 'index.html';
+    }
+
+    isiForm();
+  </script>
+  <script src="auth-nav.js"></script>
+</body>
+</html>
