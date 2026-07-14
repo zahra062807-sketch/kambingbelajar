@@ -197,5 +197,25 @@
 
   </div>
 
+  <!-- ══ MODAL DETAIL SISWA ══ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) tutupModal()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="tutupModal()">✕</button>
+      <div class="modal-avatar" id="mAvatar">P</div>
+      <h2 id="mNama">Nama Siswa</h2>
+      <p class="m-sub" id="mSub">Sekolah · Kelas</p>
+      <div class="modal-stats">
+        <div class="box"><div class="n" id="mXp">0</div><div class="l">Total XP</div></div>
+        <div class="box"><div class="n" id="mLevel">1</div><div class="l">Level</div></div>
+        <div class="box"><div class="n" id="mEmail" style="font-size:.8rem;">-</div><div class="l">Email</div></div>
+        <div class="box"><div class="n" id="mJoin" style="font-size:.8rem;">-</div><div class="l">Bergabung</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
+    © 2025 BelajarBareng.id · Dashboard khusus Guru & Orang Tua
+  </footer>
+  
 </body>
 </html>
