@@ -216,6 +216,91 @@
   <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
     © 2025 BelajarBareng.id · Dashboard khusus Guru & Orang Tua
   </footer>
-  
+
+<script>
+    // ── Auth guard: cuma role guru_ortu yang boleh akses ──
+    const currentRaw = localStorage.getItem('bb_current');
+    if (!currentRaw) {
+      window.location.href = 'login.html';
+    } else {
+      const current = JSON.parse(currentRaw);
+      if (current.role !== 'guru_ortu') {
+        window.location.href = 'dashboard.html'; // siswa nyasar ke sini, lempar balik
+      }
+    }
+
+    // Ambil semua siswa terdaftar (untuk versi PHP nanti: SELECT * FROM users WHERE role='siswa')
+    // role !== 'guru_ortu' juga menangkap akun lama yang belum punya field role
+    let allSiswa = JSON.parse(localStorage.getItem('bb_users') || '[]')
+      .filter(u => u.role !== 'guru_ortu');
+
+    function levelFromXp(xp) { return Math.floor((xp || 0) / 500) + 1; }
+
+    function renderStats(list) {
+      document.getElementById('statTotal').textContent = list.length;
+      const avgXp = list.length ? Math.round(list.reduce((a,b) => a + (b.xp||0), 0) / list.length) : 0;
+      document.getElementById('statAvgXp').textContent = avgXp.toLocaleString('id-ID');
+      document.getElementById('statSMP').textContent = list.filter(s => s.jenjang === 'SMP').length;
+      document.getElementById('statSMA').textContent = list.filter(s => s.jenjang === 'SMA').length;
+    }
+
+    function renderList(list) {
+      const el = document.getElementById('siswaList');
+      if (list.length === 0) {
+        el.innerHTML = '<div class="empty-state">Belum ada siswa yang cocok / terdaftar.</div>';
+        return;
+      }
+      el.innerHTML = list.map((s, i) => {
+        const initial = (s.nama || 'P')[0].toUpperCase();
+        return `
+        <div class="siswa-row" onclick="bukaDetail(${i})">
+          <div class="s-avatar">${initial}</div>
+          <div>
+            <div class="s-name">${s.nama || '-'}</div>
+            <div class="s-email">${s.email || '-'}</div>
+          </div>
+          <div class="s-kelas">${s.sekolah && s.sekolah !== '-' ? s.sekolah : '—'}</div>
+          <div class="s-kelas">${s.jenjang || ''} ${s.kelas || ''}</div>
+          <div class="s-xp">${(s.xp || 0).toLocaleString('id-ID')} XP</div>
+        </div>`;
+      }).join('');
+    }
+
+    let filtered = allSiswa;
+
+    function applyFilter() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const kelas = document.getElementById('filterKelas').value;
+      filtered = allSiswa.filter(s => {
+        const matchNama = (s.nama || '').toLowerCase().includes(q);
+        const matchKelas = !kelas || s.kelas === kelas;
+        return matchNama && matchKelas;
+      });
+      renderList(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilter);
+    document.getElementById('filterKelas').addEventListener('change', applyFilter);
+
+    function bukaDetail(i) {
+      const s = filtered[i];
+      document.getElementById('mAvatar').textContent = (s.nama || 'P')[0].toUpperCase();
+      document.getElementById('mNama').textContent = s.nama || '-';
+      document.getElementById('mSub').textContent = `${s.sekolah && s.sekolah !== '-' ? s.sekolah : 'Sekolah tidak diisi'} · ${s.jenjang || ''} ${s.kelas || ''}`;
+      document.getElementById('mXp').textContent = (s.xp || 0).toLocaleString('id-ID');
+      document.getElementById('mLevel').textContent = levelFromXp(s.xp);
+      document.getElementById('mEmail').textContent = s.email || '-';
+      document.getElementById('mJoin').textContent = s.joined ? new Date(s.joined).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-';
+      document.getElementById('modalOverlay').classList.add('show');
+    }
+
+    function tutupModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+    }
+
+    renderStats(allSiswa);
+    renderList(allSiswa);
+
+</script>
 </body>
 </html>
