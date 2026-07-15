@@ -1,28 +1,446 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Live Class - BelajarBareng.id</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Class – BelajarBareng.id</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── HERO ── */
+    .page-hero { margin-bottom: 3rem; }
+    .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: .5rem; }
+    .page-hero p  { color: var(--muted); font-size: 1rem; }
+
+    /* ── FILTER TABS ── */
+    .filter-tabs {
+      display: flex; gap: .5rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .tab {
+      padding: .45rem 1.1rem; border-radius: 999px;
+      font-size: .85rem; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      transition: all .2s;
+    }
+    .tab:hover  { background: rgba(124,58,237,.15); color: var(--text); border-color: var(--purple); }
+    .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+    /* ── LIVE NOW BANNER ── */
+    .live-now {
+      background: linear-gradient(135deg, rgba(239,68,68,.2), rgba(124,58,237,.2));
+      border: 1px solid rgba(239,68,68,.4);
+      border-radius: 20px; padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: #EF4444; color: #fff;
+      font-size: .75rem; font-weight: 700;
+      padding: .3rem .75rem; border-radius: 999px;
+      flex-shrink: 0;
+      animation: pulse-badge 1.8s ease infinite;
+    }
+    @keyframes pulse-badge {
+      0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.6); }
+      50%      { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+    }
+    .live-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #fff;
+    }
+    .live-now-info { flex: 1; }
+    .live-now-info h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .2rem; }
+    .live-now-info p  { font-size: .85rem; color: var(--muted); }
+    .live-now-meta {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .viewer-count {
+      font-size: .8rem; color: var(--muted);
+      display: flex; align-items: center; gap: .3rem;
+    }
+
+    /* ── CLASS GRID ── */
+    .section-label-sm {
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+
+    .class-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .class-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(124,58,237,.2);
+    }
+
+    .class-thumb {
+      height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      position: relative; overflow: hidden;
+    }
+
+    .class-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+
+    .class-meta {
+      display: flex; gap: .5rem; flex-wrap: wrap;
+      margin-bottom: .75rem;
+    }
+    .chip {
+      font-size: .7rem; font-weight: 700;
+      padding: .2rem .6rem; border-radius: 999px;
+    }
+    .chip-mapel  { background: rgba(124,58,237,.2); color: var(--purple-light); }
+    .chip-level  { background: rgba(59,130,246,.15); color: #93C5FD; }
+    .chip-live   { background: rgba(239,68,68,.2);  color: #FCA5A5; }
+    .chip-soon   { background: rgba(251,191,36,.15); color: var(--yellow); }
+    .chip-done   { background: rgba(100,116,139,.15); color: #94A3B8; }
+
+    .class-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; line-height: 1.3; }
+    .class-body .tutor-name {
+      font-size: .8rem; color: var(--muted); margin-bottom: .75rem;
+    }
+    .class-body .tutor-name strong { color: var(--text); font-weight: 600; }
+
+    .class-time {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .82rem; color: var(--muted);
+      margin-bottom: 1rem; margin-top: auto;
+    }
+
+    .class-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: .85rem;
+      border-top: 1px solid var(--border);
+    }
+    .participants {
+      font-size: .78rem; color: var(--muted);
+      display: flex; align-items: center; gap: .3rem;
+    }
+
+    .btn-join, .btn-remind, .btn-replay {
+      font-size: .8rem; font-weight: 700;
+      padding: .45rem 1.1rem; border-radius: 999px;
+      border: none; cursor: pointer;
+      transition: all .2s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: .3rem;
+    }
+    .btn-join {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff;
+      box-shadow: 0 0 12px rgba(124,58,237,.4);
+    }
+    .btn-join:hover { transform: translateY(-1px); box-shadow: 0 0 20px rgba(124,58,237,.6); }
+    .btn-remind {
+      background: rgba(251,191,36,.15); color: var(--yellow);
+      border: 1px solid rgba(251,191,36,.3);
+    }
+    .btn-remind:hover { background: rgba(251,191,36,.25); }
+    .btn-replay {
+      background: rgba(100,116,139,.15); color: #94A3B8;
+      border: 1px solid rgba(100,116,139,.2);
+    }
+    .btn-replay:hover { background: rgba(100,116,139,.25); }
+
+    /* ── REMINDER TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: .85rem 1.5rem;
+      font-size: .88rem; font-weight: 600;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+      transition: transform .35s ease;
+      z-index: 999; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
 </head>
 <body>
-    <header><h1>Live Class</h1></header>
-    <nav>
-        <a href="index.html"><button>Home</button></a>
-        <a href="class.html"><button>Live Class</button></a>
-    </nav>
 
-    <section class="content">
-        <h2>Live Class (Zoom)</h2>
-        <p>📘 Matematika - Senin 16:00</p>
-        <a href="https://zoom.us/" target="_blank">
-            <button class="action">Masuk Kelas</button>
-        </a>
-    </section>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
 
-    <footer>
-        <p>⭐ Poin: <span id="points">0</span></p>
-    </footer>
-    <script src="script.js"></script>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="class.html" class="btn-nav">Live Class 📺</a>
+      <a href="tutor.html">AI Tutor</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="login.html">Masuk →</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- PAGE HERO -->
+    <div class="page-hero reveal">
+      <div class="section-label">Live Class</div>
+      <h1>Belajar Bareng Guru Terbaik 📺</h1>
+      <p>Kelas live interaktif setiap hari. Tanya jawab langsung, quiz, dan sesi diskusi seru!</p>
+    </div>
+
+    <!-- LIVE NOW -->
+    <div class="live-now reveal">
+      <div class="live-badge"><span class="dot"></span> LIVE SEKARANG</div>
+      <div class="live-now-info">
+        <h3>🔢 Matematika — Trigonometri & Aplikasinya</h3>
+        <p>Bersama Kak Dina Rahayu · SMA Kelas 11</p>
+      </div>
+      <div class="live-now-meta">
+        <div class="viewer-count">👥 1.243 sedang menonton</div>
+        <a href="#" class="btn-join" onclick="joinClass(event, 'Matematika — Trigonometri')">▶ Gabung Sekarang</a>
+      </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-tabs reveal">
+      <button class="tab active" data-filter="all">Semua</button>
+      <button class="tab" data-filter="Matematika">🔢 Matematika</button>
+      <button class="tab" data-filter="IPA">🔬 IPA</button>
+      <button class="tab" data-filter="IPS">🌏 IPS</button>
+      <button class="tab" data-filter="Bahasa">📝 Bahasa</button>
+      <button class="tab" data-filter="SNBT">🎓 SNBT</button>
+    </div>
+
+    <!-- UPCOMING CLASSES -->
+    <div class="section-label-sm reveal">⏰ Jadwal Hari Ini & Besok</div>
+    <div class="class-grid" id="classGrid">
+
+      <div class="class-card reveal" data-filter="IPA">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(59,130,246,.25), rgba(124,58,237,.15));">⚡</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Fisika</span>
+            <span class="chip chip-level">SMA Kelas 12</span>
+            <span class="chip chip-soon">⏰ 1 jam lagi</span>
+          </div>
+          <h3>Listrik Statis & Hukum Coulomb</h3>
+          <div class="tutor-name">oleh <strong>Kak Arif Wibowo</strong></div>
+          <div class="class-time">🕐 Hari ini · 15.00–16.30 WIB</div>
+          <div class="class-footer">
+            <div class="participants">👥 842 daftar</div>
+            <button class="btn-remind" onclick="setReminder(event, 'Listrik Statis')">🔔 Ingatkan Aku</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card reveal" data-filter="Bahasa">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(16,185,129,.2), rgba(59,130,246,.15));">🌏</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Bahasa Inggris</span>
+            <span class="chip chip-level">SMP & SMA</span>
+            <span class="chip chip-soon">⏰ 3 jam lagi</span>
+          </div>
+          <h3>Speaking & Writing: IELTS Preparation</h3>
+          <div class="tutor-name">oleh <strong>Miss Sheila Amanda</strong></div>
+          <div class="class-time">🕐 Hari ini · 17.00–18.00 WIB</div>
+          <div class="class-footer">
+            <div class="participants">👥 1.105 daftar</div>
+            <button class="btn-remind" onclick="setReminder(event, 'Speaking IELTS')">🔔 Ingatkan Aku</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card reveal" data-filter="IPA">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(236,72,153,.2), rgba(124,58,237,.15));">🧬</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Biologi</span>
+            <span class="chip chip-level">SMA Kelas 11</span>
+            <span class="chip chip-soon">⏰ Besok pagi</span>
+          </div>
+          <h3>Sistem Reproduksi Manusia & Hormon</h3>
+          <div class="tutor-name">oleh <strong>Kak Rina Kusuma</strong></div>
+          <div class="class-time">🕐 Besok · 08.00–09.30 WIB</div>
+          <div class="class-footer">
+            <div class="participants">👥 621 daftar</div>
+            <button class="btn-remind" onclick="setReminder(event, 'Sistem Reproduksi')">🔔 Ingatkan Aku</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card reveal" data-filter="Matematika">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(251,191,36,.2), rgba(239,68,68,.1));">📐</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Matematika</span>
+            <span class="chip chip-level">SMP Kelas 9</span>
+            <span class="chip chip-soon">⏰ Besok siang</span>
+          </div>
+          <h3>Bangun Ruang Sisi Lengkung & Volumenya</h3>
+          <div class="tutor-name">oleh <strong>Kak Budi Santoso</strong></div>
+          <div class="class-time">🕐 Besok · 13.00–14.30 WIB</div>
+          <div class="class-footer">
+            <div class="participants">👥 493 daftar</div>
+            <button class="btn-remind" onclick="setReminder(event, 'Bangun Ruang')">🔔 Ingatkan Aku</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card reveal" data-filter="SNBT">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(124,58,237,.3), rgba(16,185,129,.15));">🎓</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">SNBT</span>
+            <span class="chip chip-level">SMA Kelas 12</span>
+            <span class="chip chip-soon">⏰ Besok sore</span>
+          </div>
+          <h3>Strategi TPS: Penalaran Umum & Figural</h3>
+          <div class="tutor-name">oleh <strong>Kak Hendra Pratama</strong></div>
+          <div class="class-time">🕐 Besok · 16.00–18.00 WIB</div>
+          <div class="class-footer">
+            <div class="participants">👥 2.381 daftar</div>
+            <button class="btn-remind" onclick="setReminder(event, 'Strategi TPS SNBT')">🔔 Ingatkan Aku</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card reveal" data-filter="IPS">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(251,191,36,.15), rgba(59,130,246,.15));">🗺️</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Geografi</span>
+            <span class="chip chip-level">SMA Kelas 10</span>
+            <span class="chip chip-soon">⏰ Besok sore</span>
+          </div>
+          <h3>Atmosfer, Cuaca, dan Perubahan Iklim</h3>
+          <div class="tutor-name">oleh <strong>Kak Sari Indah</strong></div>
+          <div class="class-time">🕐 Besok · 15.00–16.30 WIB</div>
+          <div class="class-footer">
+            <div class="participants">👥 378 daftar</div>
+            <button class="btn-remind" onclick="setReminder(event, 'Perubahan Iklim')">🔔 Ingatkan Aku</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- REPLAY / RECORDED -->
+    <div class="section-label-sm reveal">🎬 Rekaman Kelas Sebelumnya</div>
+    <div class="class-grid reveal">
+
+      <div class="class-card" data-filter="Matematika">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(100,116,139,.15), rgba(124,58,237,.1));">✏️</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Matematika</span>
+            <span class="chip chip-done">✓ Selesai</span>
+          </div>
+          <h3>Fungsi Komposisi & Fungsi Invers</h3>
+          <div class="tutor-name">oleh <strong>Kak Dina Rahayu</strong></div>
+          <div class="class-time">📅 Kemarin · 90 menit</div>
+          <div class="class-footer">
+            <div class="participants">👥 3.821 ditonton</div>
+            <a href="#" class="btn-replay" onclick="watchReplay(event, 'Fungsi Komposisi')">▶ Tonton</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card" data-filter="IPA">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(100,116,139,.15), rgba(16,185,129,.1));">⚗️</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">Kimia</span>
+            <span class="chip chip-done">✓ Selesai</span>
+          </div>
+          <h3>Laju Reaksi & Faktor yang Mempengaruhi</h3>
+          <div class="tutor-name">oleh <strong>Kak Mega Putri</strong></div>
+          <div class="class-time">📅 2 hari lalu · 75 menit</div>
+          <div class="class-footer">
+            <div class="participants">👥 2.104 ditonton</div>
+            <a href="#" class="btn-replay" onclick="watchReplay(event, 'Laju Reaksi')">▶ Tonton</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card" data-filter="SNBT">
+        <div class="class-thumb" style="background: linear-gradient(135deg, rgba(100,116,139,.15), rgba(251,191,36,.08));">📖</div>
+        <div class="class-body">
+          <div class="class-meta">
+            <span class="chip chip-mapel">SNBT</span>
+            <span class="chip chip-done">✓ Selesai</span>
+          </div>
+          <h3>Literasi Bahasa Indonesia — Teks Argumentatif</h3>
+          <div class="tutor-name">oleh <strong>Kak Hendra Pratama</strong></div>
+          <div class="class-time">📅 3 hari lalu · 120 menit</div>
+          <div class="class-footer">
+            <div class="participants">👥 5.672 ditonton</div>
+            <a href="#" class="btn-replay" onclick="watchReplay(event, 'Literasi SNBT')">▶ Tonton</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+  <script>
+    // Filter tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.dataset.filter;
+        document.querySelectorAll('.class-card').forEach(card => {
+          const match = filter === 'all' || card.dataset.filter === filter ||
+            (filter === 'IPA' && ['IPA', 'Matematika'].includes(card.dataset.filter));
+          card.style.display = match ? '' : 'none';
+        });
+      });
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function joinClass(e, name) {
+      e.preventDefault();
+      showToast(`🚀 Bergabung ke kelas "${name}"...`);
+      // Di sini bisa diarahkan ke link Zoom/Meet
+    }
+
+    function setReminder(e, name) {
+      showToast(`🔔 Pengingat untuk "${name}" sudah diset!`);
+    }
+
+    function watchReplay(e, name) {
+      e.preventDefault();
+      showToast(`▶ Memuat rekaman "${name}"...`);
+    }
+  </script>
+  <script src="auth-nav.js"></script>
 </body>
 </html>
