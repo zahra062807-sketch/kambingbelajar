@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – BelajarBareng.id</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── LAYOUT ── */
+    .dash-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* ── GREETING ── */
+    .greeting {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .greeting h1 {
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 800; line-height: 1.2;
+    }
+    .greeting h1 span { display: block; }
+    .greeting h1 .name {
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .greeting p { color: var(--muted); font-size: .9rem; margin-top: .3rem; }
+
+    .profile-chip {
+      display: flex; align-items: center; gap: .75rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 999px; padding: .5rem 1rem .5rem .6rem;
+    }
+    .profile-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .profile-info { line-height: 1.3; }
+    .profile-info .pname { font-size: .875rem; font-weight: 700; }
+    .profile-info .pkelas { font-size: .75rem; color: var(--muted); }
+
+    /* ── XP BAR ── */
+    .xp-bar-wrap {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .xp-main { flex: 1; min-width: 200px; }
+    .xp-label {
+      display: flex; justify-content: space-between;
+      font-size: .8rem; margin-bottom: .5rem;
+    }
+    .xp-label .lvl { font-weight: 800; color: var(--purple-light); }
+    .xp-label .pts { color: var(--muted); }
+    .xp-track {
+      height: 10px; background: var(--bg);
+      border-radius: 999px; overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      transition: width 1s ease;
+      box-shadow: 0 0 10px rgba(124,58,237,.5);
+    }
+    .xp-next { font-size: .75rem; color: var(--muted); margin-top: .4rem; }
+
+    .xp-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .xp-stat { text-align: center; }
+    .xp-stat .val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .xp-stat .lbl { font-size: .72rem; color: var(--muted); margin-top: .1rem; }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .quick-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.25rem 1rem;
+      text-align: center; text-decoration: none; color: inherit;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      display: block;
+    }
+    .quick-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(124,58,237,.2);
+      border-color: var(--purple);
+    }
+    .quick-card .qc-icon { font-size: 2rem; margin-bottom: .6rem; display: block; }
+    .quick-card .qc-label { font-size: .85rem; font-weight: 700; }
+    .quick-card .qc-sub   { font-size: .72rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── MATERI SECTION ── */
+    .materi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.1rem;
+    }
+    .materi-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+      text-decoration: none; color: inherit;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+    .materi-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--purple);
+      box-shadow: 0 10px 28px rgba(124,58,237,.18);
+    }
+    .materi-icon {
+      width: 48px; height: 48px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .materi-info { flex: 1; }
+    .materi-info h3 { font-size: .92rem; font-weight: 700; margin-bottom: .2rem; }
+    .materi-info p  { font-size: .77rem; color: var(--muted); }
+    .materi-progress {
+      height: 4px; background: var(--bg);
+      border-radius: 999px; margin-top: .5rem; overflow: hidden;
+    }
+    .materi-progress-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+    }
+    .materi-arrow { color: var(--muted); font-size: 1rem; flex-shrink: 0; }
+
+    /* ── LEADERBOARD MINI ── */
+    .lb-mini { background: var(--card); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
+    .lb-mini-head {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700; font-size: .9rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .lb-mini-head a { font-size: .78rem; color: var(--purple-light); text-decoration: none; font-weight: 600; }
+    .lb-mini-row {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 1.25rem;
+      border-bottom: 1px solid rgba(124,58,237,.08);
+    }
+    .lb-mini-row:last-child { border-bottom: none; }
+    .lb-mini-row .rank { font-family: 'Space Grotesk', sans-serif; font-weight: 700; width: 22px; text-align: center; font-size: .9rem; color: var(--muted); }
+    .rank.gold   { color: #FBBF24; }
+    .rank.silver { color: #94A3B8; }
+    .rank.bronze { color: #CD7F32; }
+    .lb-mini-row .av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
+    .lb-mini-row .nm { flex: 1; font-size: .85rem; font-weight: 600; }
+    .lb-mini-row .nm small { display: block; font-size: .72rem; color: var(--muted); font-weight: 400; }
+    .lb-mini-row .xp-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .85rem; color: var(--yellow); }
+
+    /* ── MOTIVASI BANNER ── */
+    .motivasi {
+      background: linear-gradient(135deg, rgba(124,58,237,.2), rgba(59,130,246,.15));
+      border: 1px solid var(--border); border-radius: 18px;
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .motivasi .mot-icon { font-size: 2rem; flex-shrink: 0; }
+    .motivasi .mot-text h3 { font-size: .95rem; font-weight: 700; margin-bottom: .2rem; }
+    .motivasi .mot-text p  { font-size: .8rem; color: var(--muted); }
+    .motivasi .mot-btn {
+      margin-left: auto;
+      background: var(--purple); color: #fff;
+      border: none; border-radius: 999px;
+      padding: .5rem 1.1rem; font-size: .82rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: opacity .2s;
+    }
+    .motivasi .mot-btn:hover { opacity: .85; }
+
+    /* ── TWO COL ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 1.5rem; align-items: start;
+    }
+    @media (max-width: 800px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* ── LOGOUT ── */
+    .btn-logout {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); border-radius: 999px;
+      padding: .4rem 1rem; font-size: .8rem; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+    }
+    .btn-logout:hover { border-color: #EF4444; color: #FCA5A5; }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-links">
+      <a href="dashboard.html" class="btn-nav">Dashboard</a>
+      <a href="materi.html">Materi</a>
+      <a href="tutor.html">AI Tutor</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <div class="dash-wrap">
+
+    <!-- ══ GREETING ══ -->
+    <div class="greeting reveal">
+      <div>
+        <h1>
+          <span>Halo,</span>
+          <span class="name" id="greetName">Pelajar</span>
+        </h1>
+        <p id="greetSub">Semangat belajar hari ini! 💪</p>
+      </div>
+    </div>
+
+    <!-- ══ XP BAR ══ -->
+    <div class="xp-bar-wrap reveal">
+      <div class="xp-main">
+        <div class="xp-label">
+          <span class="lvl" id="xpLevel">Level 1 — Pemula</span>
+          <span class="pts"><span id="xpCurrent">0</span> XP</span>
+        </div>
+        <div class="xp-track">
+          <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+        </div>
+        <div class="xp-next" id="xpNext">0 XP lagi untuk naik ke Level 2</div>
+      </div>
+      <div class="xp-stats">
+        <div class="xp-stat">
+          <div class="val" id="statHari">0</div>
+          <div class="lbl">Hari Belajar</div>
+        </div>
+        <div class="xp-stat">
+          <div class="val" id="statSoal">0</div>
+          <div class="lbl">Soal Dikerjakan</div>
+        </div>
+        <div class="xp-stat">
+          <div class="val" id="statRank">#—</div>
+          <div class="lbl">Peringkat</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MOTIVASI ══ -->
+    <div class="motivasi reveal" style="margin-bottom: 2rem;" id="motivasiBanner">
+      <div class="mot-icon">🤖</div>
+      <div class="mot-text">
+        <h3>Ada yang bingung? Tanya AI Tutor!</h3>
+        <p>AI Tutor siap membantu kamu memahami materi kapan saja — gratis!</p>
+      </div>
+      <a href="tutor.html" class="mot-btn">Tanya Sekarang →</a>
+    </div>
+
+    <!-- ══ QUICK ACTIONS ══ -->
+    <div class="section-label" style="position:relative;z-index:1;margin-bottom:.75rem;">Menu Cepat</div>
+    <div class="quick-grid reveal" style="margin-bottom:2.5rem;">
+      <a href="materi.html" class="quick-card">
+        <span class="qc-icon">📚</span>
+        <div class="qc-label">Materi</div>
+        <div class="qc-sub">Lanjut belajar</div>
+      </a>
+      <a href="latihan.html" class="quick-card">
+        <span class="qc-icon">✏️</span>
+        <div class="qc-label">Latihan Soal</div>
+        <div class="qc-sub">Asah kemampuan</div>
+      </a>
+      <a href="tutor.html" class="quick-card">
+        <span class="qc-icon">🤖</span>
+        <div class="qc-label">AI Tutor</div>
+        <div class="qc-sub">Tanya apa saja</div>
+      </a>
+      <a href="leaderboard.html" class="quick-card">
+        <span class="qc-icon">🏆</span>
+        <div class="qc-label">Leaderboard</div>
+        <div class="qc-sub">Cek peringkatmu</div>
+      </a>
+    </div>
+
+    <!-- ══ MATERI + LEADERBOARD ══ -->
+    <div class="two-col">
+
+      <!-- Materi -->
+      <div>
+        <div class="section-label" style="position:relative;z-index:1;margin-bottom:.75rem;">Materi Kelasmu</div>
+        <div class="materi-grid reveal" id="materiGrid">
+          <!-- diisi JS berdasarkan kelas -->
+        </div>
+      </div>
+
+      <!-- Leaderboard mini -->
+      <div class="reveal">
+        <div class="section-label" style="position:relative;z-index:1;margin-bottom:.75rem;">Peringkat Minggu Ini</div>
+        <div class="lb-mini">
+          <div class="lb-mini-head">
+            🏆 Top Pelajar
+            <a href="leaderboard.html">Lihat semua →</a>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank gold">1</div>
+            <div class="av" style="background:rgba(251,191,36,.15);">👑</div>
+            <div class="nm">Anindita R. <small>SMA Yogyakarta</small></div>
+            <div class="xp-val">12.450</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank silver">2</div>
+            <div class="av" style="background:rgba(148,163,184,.1);">🌟</div>
+            <div class="nm">Bagas P. <small>SMPN Surabaya</small></div>
+            <div class="xp-val">11.800</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank bronze">3</div>
+            <div class="av" style="background:rgba(205,127,50,.1);">⚡</div>
+            <div class="nm">Siti N. <small>SMA Bandung</small></div>
+            <div class="xp-val">10.990</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank">4</div>
+            <div class="av" style="background:rgba(124,58,237,.1);">🚀</div>
+            <div class="nm">Kevin S. <small>SMA Semarang</small></div>
+            <div class="xp-val">9.750</div>
+          </div>
+          <div class="lb-mini-row">
+            <div class="rank">5</div>
+            <div class="av" style="background:rgba(59,130,246,.1);">🎯</div>
+            <div class="nm">Putri M. <small>SMPN Medan</small></div>
+            <div class="xp-val">9.310</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
+    © 2025 BelajarBareng.id · Dibuat dengan ❤️ untuk pelajar Indonesia 🇮🇩
+  </footer>
+
+  <script>
+    // ── Auth guard ──
+    const raw = localStorage.getItem('bb_current');
+    if (!raw) window.location.href = 'login.html';
+    const user = JSON.parse(raw || '{}');
+    if (user.role === 'guru_ortu') window.location.href = 'dashboard-guru.html'; // akun guru/ortu nyasar, lempar balik
+
+    // ── Greeting ──
+    const firstName = (user.nama || 'Pelajar').split(' ')[0];
+    document.getElementById('greetName').textContent   = firstName;
+
+    // Greeting message berdasarkan jam
+    const hour = new Date().getHours();
+    const greetMsg = hour < 11 ? 'Selamat pagi! Mulai hari dengan semangat belajar 🌅'
+                   : hour < 15 ? 'Selamat siang! Waktunya belajar yang produktif ☀️'
+                   : hour < 18 ? 'Selamat sore! Jangan lupa review materi hari ini 📖'
+                   :             'Selamat malam! AI Tutor siap menemanimu belajar 🌙';
+    document.getElementById('greetSub').textContent = greetMsg;
+
+    // ── XP & Level ──
+    const xp = parseInt(user.xp || 0);
+     const levels = [
+      { name: 'Pemula',     min: 0,    max: 500  },
+      { name: 'Pelajar',    min: 500,  max: 1500 },
+      { name: 'Mahir',      min: 1500, max: 3000 },
+      { name: 'Juara',      min: 3000, max: 6000 },
+      { name: 'Legenda',    min: 6000, max: 10000},
+    ];
+    const lvl  = levels.findIndex(l => xp >= l.min && xp < l.max);
+    const curLvl  = lvl === -1 ? levels[levels.length-1] : levels[lvl];
+    const nextLvl = levels[Math.min(lvl+1, levels.length-1)];
+    const pct  = Math.min(((xp - curLvl.min) / (curLvl.max - curLvl.min)) * 100, 100);
+
+    document.getElementById('xpLevel').textContent   = `Level ${lvl+1} — ${curLvl.name}`;
+    document.getElementById('xpCurrent').textContent = xp.toLocaleString('id-ID');
+    document.getElementById('xpNext').textContent    = `${(curLvl.max - xp).toLocaleString('id-ID')} XP lagi untuk naik ke Level ${lvl+2}`;
+    setTimeout(() => document.getElementById('xpFill').style.width = pct + '%', 300);
+
+    document.getElementById('statHari').textContent = user.hariAktif || '1';
+    document.getElementById('statSoal').textContent = user.soalDikerjakan || '0';
+    document.getElementById('statRank').textContent = '#' + (user.rank || '—');
+
+    // ── Materi per kelas ──
+    const materiData = {
+      'SMP': {
+        'Kelas 7':  [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Bilangan, Aljabar, Geometri', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'IPA',        sub:'Makhluk Hidup, Zat & Energi', prog: 0 },
+          { icon:'🌏', bg:'rgba(16,185,129,.15)',  nama:'IPS',        sub:'Geografi, Sejarah, Ekonomi', prog: 0 },
+          { icon:'📝', bg:'rgba(236,72,153,.15)',  nama:'B. Indonesia',sub:'Teks, Sastra, Kaidah Bahasa', prog: 0 },
+          { icon:'🌍', bg:'rgba(251,191,36,.15)',  nama:'B. Inggris', sub:'Grammar, Vocabulary, Reading', prog: 0 },
+          { icon:'⚖️', bg:'rgba(239,68,68,.12)',   nama:'PKn',        sub:'Pancasila, Kewarganegaraan', prog: 0 },
+        ],
+        'Kelas 8':  [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'SPLDV, Pythagoras, Statistika', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'IPA',        sub:'Gerak, Gaya, Cahaya, Bunyi', prog: 0 },
+          { icon:'🌏', bg:'rgba(16,185,129,.15)',  nama:'IPS',        sub:'Interaksi Sosial, Ekonomi', prog: 0 },
+          { icon:'📝', bg:'rgba(236,72,153,.15)',  nama:'B. Indonesia',sub:'Teks Eksposisi, Puisi, Novel', prog: 0 },
+          { icon:'🌍', bg:'rgba(251,191,36,.15)',  nama:'B. Inggris', sub:'Narrative, Report Text', prog: 0 },
+          { icon:'⚖️', bg:'rgba(239,68,68,.12)',   nama:'PKn',        sub:'Hukum, HAM, Demokrasi', prog: 0 },
+        ],
+        'Kelas 9':  [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Bangun Ruang, Transformasi, Statistik', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'IPA',        sub:'Listrik, Kemagnetan, Bioteknologi', prog: 0 },
+          { icon:'🌏', bg:'rgba(16,185,129,.15)',  nama:'IPS',        sub:'Globalisasi, Ekonomi Kreatif', prog: 0 },
+          { icon:'📝', bg:'rgba(236,72,153,.15)',  nama:'B. Indonesia',sub:'Teks Diskusi, Cerpen, Pidato', prog: 0 },
+          { icon:'🌍', bg:'rgba(251,191,36,.15)',  nama:'B. Inggris', sub:'Analytical Exposition, Drama', prog: 0 },
+          { icon:'🎓', bg:'rgba(239,68,68,.12)',   nama:'Persiapan UN',sub:'Latihan Soal & Try Out', prog: 0 },
+        ],
+      },
+      'SMA': {
+        'Kelas 10': [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Fungsi, Trigonometri, Eksponen', prog: 0 },
+          { icon:'⚗️', bg:'rgba(16,185,129,.15)',  nama:'Kimia',      sub:'Struktur Atom, Ikatan Kimia', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'Fisika',     sub:'Gerak, Vektor, Hukum Newton', prog: 0 },
+          { icon:'🧬', bg:'rgba(236,72,153,.15)',  nama:'Biologi',    sub:'Sel, Jaringan, Keanekaragaman Hayati', prog: 0 },
+          { icon:'📝', bg:'rgba(251,191,36,.15)',  nama:'B. Indonesia',sub:'Teks Laporan, Anekdot, Hikayat', prog: 0 },
+          { icon:'🌍', bg:'rgba(239,68,68,.12)',   nama:'B. Inggris', sub:'Descriptive, Analytical Text', prog: 0 },
+        ],
+        'Kelas 11': [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Integral, Limit, Barisan Deret', prog: 0 },
+          { icon:'⚗️', bg:'rgba(16,185,129,.15)',  nama:'Kimia',      sub:'Termokimia, Laju Reaksi, Kesetimbangan', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'Fisika',     sub:'Fluida, Termodinamika, Gelombang', prog: 0 },
+          { icon:'🧬', bg:'rgba(236,72,153,.15)',  nama:'Biologi',    sub:'Sistem Organ, Metabolisme, Genetika', prog: 0 },
+          { icon:'📝', bg:'rgba(251,191,36,.15)',  nama:'B. Indonesia',sub:'Teks Prosedur, Eksplanasi, Cerpen', prog: 0 },
+          { icon:'🌍', bg:'rgba(239,68,68,.12)',   nama:'B. Inggris', sub:'Cause-Effect, Hortatory Text', prog: 0 },
+        ],
+        'Kelas 12': [
+          { icon:'🔢', bg:'rgba(124,58,237,.15)', nama:'Matematika', sub:'Statistika, Peluang, Review UN', prog: 0 },
+          { icon:'⚗️', bg:'rgba(16,185,129,.15)',  nama:'Kimia',      sub:'Elektrokimia, Polimer, Review', prog: 0 },
+          { icon:'🔬', bg:'rgba(59,130,246,.15)',  nama:'Fisika',     sub:'Listrik Statis, Relativitas, Inti Atom', prog: 0 },
+          { icon:'🧬', bg:'rgba(236,72,153,.15)',  nama:'Biologi',    sub:'Evolusi, Bioteknologi, Review', prog: 0 },
+          { icon:'📝', bg:'rgba(251,191,36,.15)',  nama:'B. Indonesia',sub:'Teks Ulasan, Editorial, Review', prog: 0 },
+          { icon:'🎓', bg:'rgba(239,68,68,.12)',   nama:'Persiapan SNBT', sub:'TPS, Literasi, Penalaran Mat', prog: 0 },
+        ],
+      },
+    };
+
+    const kelasMateri = (materiData[user.jenjang] || {})[user.kelas] || [];
+    const grid = document.getElementById('materiGrid');
+
+    if (kelasMateri.length === 0) {
+      grid.innerHTML = '<p style="color:var(--muted);font-size:.9rem;">Materi belum tersedia untuk kelasmu.</p>';
+    } else {
+      grid.innerHTML = kelasMateri.map(m => `
+        <a href="materi.html" class="materi-card">
+          <div class="materi-icon" style="background:${m.bg}">${m.icon}</div>
+          <div class="materi-info">
+            <h3>${m.nama}</h3>
+            <p>${m.sub}</p>
+            <div class="materi-progress">
+              <div class="materi-progress-fill" style="width:${m.prog}%"></div>
+            </div>
+          </div>
+          <div class="materi-arrow">›</div>
+        </a>
+      `).join('');
+    }
+
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+
+    // ── Logout ──
+    function doLogout() {
+      localStorage.removeItem('bb_current');
+      window.location.href = 'index.html';
+    }
+  </script>
+  <script src="auth-nav.js"></script>
+</body>
+    </style>
+    </head>
+    </html>
+    
