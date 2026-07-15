@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Guru/Orang Tua – BelajarBareng.id</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    .page-head { margin-bottom: 2rem; }
+    .page-head h1 { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 800; margin-bottom: .3rem; }
+    .page-head p  { color: var(--muted); font-size: .9rem; }
+
+    /* ── STAT CARDS ── */
+    .stat-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .stat-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.25rem;
+    }
+    .stat-box .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-box .lbl { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex; gap: .75rem; flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .toolbar input, .toolbar select {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: .65rem 1rem;
+      color: var(--text); font-family: inherit; font-size: .85rem;
+      outline: none;
+    }
+    .toolbar input { flex: 1; min-width: 200px; }
+    .toolbar input:focus, .toolbar select:focus { border-color: var(--purple); }
+
+    /* ── SISWA TABLE ── */
+    .siswa-table {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+    }
+    .siswa-row {
+      display: grid;
+      grid-template-columns: 40px 2fr 1.3fr 1fr 1fr .8fr;
+      align-items: center; gap: 1rem;
+      padding: .9rem 1.5rem;
+      border-bottom: 1px solid rgba(124,58,237,.1);
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .siswa-row:hover { background: rgba(124,58,237,.08); }
+    .siswa-row:last-child { border-bottom: none; }
+    .siswa-row.head {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .04em; color: var(--muted);
+      cursor: default; background: var(--card2);
+    }
+    .siswa-row.head:hover { background: var(--card2); }
+
+    .s-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; color: #fff;
+    }
+    .s-name-wrap { display: flex; align-items: center; gap: .7rem; }
+    .s-name { font-weight: 700; font-size: .875rem; }
+    .s-email { font-size: .72rem; color: var(--muted); }
+    .s-kelas { font-size: .82rem; color: var(--muted); }
+    .s-xp { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--yellow); font-size: .85rem; }
+
+    .badge-level {
+      display: inline-block; font-size: .7rem; font-weight: 700;
+      padding: .25rem .65rem; border-radius: 999px;
+      background: rgba(124,58,237,.2); color: var(--purple-light);
+      text-align: center;
+    }
+
+    .empty-state {
+      text-align: center; padding: 3rem 1.5rem; color: var(--muted); font-size: .9rem;
+    }
+
+    /* ── DETAIL MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem; max-width: 420px; width: 100%;
+      animation: fadeUp .3s ease both;
+    }
+    .modal-close {
+      float: right; background: transparent; border: none;
+      color: var(--muted); font-size: 1.3rem; cursor: pointer; line-height: 1;
+    }
+    .modal-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 700; color: #fff;
+      margin-bottom: 1rem;
+    }
+    .modal-box h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: .2rem; }
+    .modal-box .m-sub { font-size: .82rem; color: var(--muted); margin-bottom: 1.25rem; }
+    .modal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .modal-stats .box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: .85rem;
+    }
+    .modal-stats .box .n { font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.15rem; }
+    .modal-stats .box .l { font-size: .72rem; color: var(--muted); margin-top:.15rem; }
+
+    @media (max-width: 700px) {
+      .siswa-row { grid-template-columns: 32px 2fr 1fr; }
+      .s-kelas, .s-xp, .badge-level { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard Siswa</a>
+      <a href="dashboard-guru.html" class="btn-nav">Dashboard Guru/Ortu</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <div class="page-head reveal">
+      <h1>👨‍🏫 Dashboard Guru / Orang Tua</h1>
+      <p>Pantau progress belajar semua siswa yang terdaftar</p>
+    </div>
+
+    <div class="stat-row reveal">
+      <div class="stat-box">
+        <div class="num" id="statTotal">0</div>
+        <div class="lbl">Total Siswa Terdaftar</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statAvgXp">0</div>
+        <div class="lbl">Rata-rata XP</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statSMP">0</div>
+        <div class="lbl">Siswa SMP</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statSMA">0</div>
+        <div class="lbl">Siswa SMA</div>
+      </div>
+    </div>
+
+    <div class="toolbar reveal">
+      <input type="text" id="searchInput" placeholder="🔍 Cari nama siswa..." />
+      <select id="filterKelas">
+        <option value="">Semua Kelas</option>
+        <option>Kelas 7</option><option>Kelas 8</option><option>Kelas 9</option>
+        <option>Kelas 10</option><option>Kelas 11</option><option>Kelas 12</option>
+      </select>
+    </div>
+
+    <div class="siswa-table reveal">
+      <div class="siswa-row head">
+        <div></div>
+        <div>Nama Siswa</div>
+        <div>Sekolah</div>
+        <div>Kelas</div>
+        <div>XP</div>
+        <div>Level</div>
+      </div>
+      <div id="siswaList"></div>
+    </div>
+
+  </div>
+
+  <!-- ══ MODAL DETAIL SISWA ══ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) tutupModal()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="tutupModal()">✕</button>
+      <div class="modal-avatar" id="mAvatar">P</div>
+      <h2 id="mNama">Nama Siswa</h2>
+      <p class="m-sub" id="mSub">Sekolah · Kelas</p>
+      <div class="modal-stats">
+        <div class="box"><div class="n" id="mXp">0</div><div class="l">Total XP</div></div>
+        <div class="box"><div class="n" id="mLevel">1</div><div class="l">Level</div></div>
+        <div class="box"><div class="n" id="mEmail" style="font-size:.8rem;">-</div><div class="l">Email</div></div>
+        <div class="box"><div class="n" id="mJoin" style="font-size:.8rem;">-</div><div class="l">Bergabung</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
+    © 2025 BelajarBareng.id · Dashboard khusus Guru & Orang Tua
+  </footer>
+
+<script>
+    // ── Auth guard: cuma role guru_ortu yang boleh akses ──
+    const currentRaw = localStorage.getItem('bb_current');
+    if (!currentRaw) {
+      window.location.href = 'login.html';
+    } else {
+      const current = JSON.parse(currentRaw);
+      if (current.role !== 'guru_ortu') {
+        window.location.href = 'dashboard.html'; // siswa nyasar ke sini, lempar balik
+      }
+    }
+
+    // Ambil semua siswa terdaftar (untuk versi PHP nanti: SELECT * FROM users WHERE role='siswa')
+    // role !== 'guru_ortu' juga menangkap akun lama yang belum punya field role
+    let allSiswa = JSON.parse(localStorage.getItem('bb_users') || '[]')
+      .filter(u => u.role !== 'guru_ortu');
+
+    function levelFromXp(xp) { return Math.floor((xp || 0) / 500) + 1; }
+
+    function renderStats(list) {
+      document.getElementById('statTotal').textContent = list.length;
+      const avgXp = list.length ? Math.round(list.reduce((a,b) => a + (b.xp||0), 0) / list.length) : 0;
+      document.getElementById('statAvgXp').textContent = avgXp.toLocaleString('id-ID');
+      document.getElementById('statSMP').textContent = list.filter(s => s.jenjang === 'SMP').length;
+      document.getElementById('statSMA').textContent = list.filter(s => s.jenjang === 'SMA').length;
+    }
+
+    function renderList(list) {
+      const el = document.getElementById('siswaList');
+      if (list.length === 0) {
+        el.innerHTML = '<div class="empty-state">Belum ada siswa yang cocok / terdaftar.</div>';
+        return;
+      }
+      el.innerHTML = list.map((s, i) => {
+        const initial = (s.nama || 'P')[0].toUpperCase();
+        return `
+        <div class="siswa-row" onclick="bukaDetail(${i})">
+          <div class="s-avatar">${initial}</div>
+          <div>
+            <div class="s-name">${s.nama || '-'}</div>
+            <div class="s-email">${s.email || '-'}</div>
+          </div>
+          <div class="s-kelas">${s.sekolah && s.sekolah !== '-' ? s.sekolah : '—'}</div>
+          <div class="s-kelas">${s.jenjang || ''} ${s.kelas || ''}</div>
+          <div class="s-xp">${(s.xp || 0).toLocaleString('id-ID')} XP</div>
+        </div>`;
+      }).join('');
+    }
+
+    let filtered = allSiswa;
+
+    function applyFilter() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const kelas = document.getElementById('filterKelas').value;
+      filtered = allSiswa.filter(s => {
+        const matchNama = (s.nama || '').toLowerCase().includes(q);
+        const matchKelas = !kelas || s.kelas === kelas;
+        return matchNama && matchKelas;
+      });
+      renderList(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilter);
+    document.getElementById('filterKelas').addEventListener('change', applyFilter);
+
+    function bukaDetail(i) {
+      const s = filtered[i];
+      document.getElementById('mAvatar').textContent = (s.nama || 'P')[0].toUpperCase();
+      document.getElementById('mNama').textContent = s.nama || '-';
+      document.getElementById('mSub').textContent = `${s.sekolah && s.sekolah !== '-' ? s.sekolah : 'Sekolah tidak diisi'} · ${s.jenjang || ''} ${s.kelas || ''}`;
+      document.getElementById('mXp').textContent = (s.xp || 0).toLocaleString('id-ID');
+      document.getElementById('mLevel').textContent = levelFromXp(s.xp);
+      document.getElementById('mEmail').textContent = s.email || '-';
+      document.getElementById('mJoin').textContent = s.joined ? new Date(s.joined).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-';
+      document.getElementById('modalOverlay').classList.add('show');
+    }
+
+    function tutupModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+    }
+
+    renderStats(allSiswa);
+    renderList(allSiswa);
+
+     // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+  <script src="auth-nav.js"></script>
+</body>
+</html>
