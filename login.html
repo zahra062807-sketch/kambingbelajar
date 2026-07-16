@@ -3,176 +3,236 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Masuk – BelajarBareng.id</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <title>Masuk - BelajarBareng.id</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body { display: flex; flex-direction: column; min-height: 100vh; }
-
-    /* ── LAYOUT ── */
-    .auth-wrap {
-      flex: 1;
-      display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1.25rem;
-      position: relative; z-index: 1;
-    }
-
-    .auth-box {
-      width: 100%; max-width: 440px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      animation: fadeUp .5s ease both;
-    }
-
-    /* ── LOGO ── */
-    .auth-logo {
-      text-align: center; margin-bottom: 2rem;
-    }
-    .auth-logo .logo-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.4rem; font-weight: 700;
-      background: linear-gradient(90deg, var(--purple-light), var(--blue));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .auth-logo .logo-text span { color: var(--yellow); -webkit-text-fill-color: var(--yellow); }
-    .auth-logo p { font-size: .82rem; color: var(--muted); margin-top: .25rem; }
-
-    /* ── TABS ── */
-    .auth-tabs {
-      display: flex; background: var(--bg);
-      border-radius: 12px; padding: 4px;
-      margin-bottom: 1.75rem;
-    }
-    .auth-tab {
-      flex: 1; padding: .55rem;
-      border-radius: 9px; border: none;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .875rem; font-weight: 700;
-      cursor: pointer; transition: all .2s;
-      background: transparent; color: var(--muted);
-    }
-    .auth-tab.active {
-      background: var(--purple);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(124,58,237,.4);
-    }
-
-    /* ── FORM ── */
-    .auth-form { display: flex; flex-direction: column; gap: 1rem; }
-
-    .field { display: flex; flex-direction: column; gap: .4rem; }
-    .field label {
-      font-size: .8rem; font-weight: 700;
-      color: var(--muted); letter-spacing: .03em;
-    }
-    .field input, .field select {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: .75rem 1rem;
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .9rem;
-      outline: none;
-      transition: border-color .2s, box-shadow .2s;
-      width: 100%;
-      appearance: none;
-    }
-    .field input:focus, .field select:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.15);
-    }
-    .field input::placeholder { color: var(--muted); }
-    .field select option { background: var(--card); }
-
-    /* jenjang + kelas row */
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-
-    /* kelas pills */
-    .kelas-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem;
-    }
-    .kelas-pill {
-      padding: .55rem .5rem; border-radius: 10px; text-align: center;
-      font-size: .82rem; font-weight: 700;
-      cursor: pointer; border: 1px solid var(--border);
-      background: var(--bg); color: var(--muted);
-      transition: all .2s;
-    }
-    .kelas-pill:hover   { border-color: var(--purple); color: var(--text); }
-    .kelas-pill.selected {
-      background: rgba(124,58,237,.2);
-      border-color: var(--purple);
-      color: var(--purple-light);
-    }
-
-    /* jenjang toggle */
-    .jenjang-toggle {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
-      margin-bottom: .25rem;
-    }
-    .jenjang-btn {
-      padding: .6rem; border-radius: 10px; text-align: center;
-      font-size: .875rem; font-weight: 700;
-      cursor: pointer; border: 1px solid var(--border);
-      background: var(--bg); color: var(--muted);
-      transition: all .2s;
-    }
-    .jenjang-btn.selected {
-      background: rgba(124,58,237,.2);
-      border-color: var(--purple);
-      color: var(--purple-light);
-    }
-
-    .field-hint {
-      font-size: .75rem; color: var(--muted); margin-top: -.25rem;
-    }
-
-    /* ── SUBMIT ── */
-    .btn-submit {
-      width: 100%; padding: .875rem;
-      background: linear-gradient(135deg, var(--purple), var(--blue));
-      color: #fff; border: none; border-radius: 12px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .95rem; font-weight: 700;
-      cursor: pointer; margin-top: .5rem;
-      transition: opacity .2s, transform .2s;
-      box-shadow: 0 0 20px rgba(124,58,237,.4);
-    }
-    .btn-submit:hover { opacity: .9; transform: translateY(-1px); }
-    .btn-submit:active { transform: translateY(0); }
-
-    /* ── DIVIDER ── */
-    .divider {
-      display: flex; align-items: center; gap: .75rem;
-      margin: .25rem 0;
-    }
-    .divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
-    .divider span { font-size: .75rem; color: var(--muted); white-space: nowrap; }
-
-    /* ── ERROR ── */
-    .error-msg {
-      background: rgba(239,68,68,.15);
-      border: 1px solid rgba(239,68,68,.3);
-      border-radius: 10px; padding: .65rem 1rem;
-      font-size: .82rem; color: #FCA5A5;
-      display: none;
-    }
-    .error-msg.show { display: block; }
-
-    /* ── STEP indicator (register only) ── */
-    .step-indicator {
-      display: flex; align-items: center; justify-content: center;
-      gap: .4rem; margin-bottom: 1.5rem;
-    }
-    .step-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--border); transition: all .3s;
-    }
-    .step-dot.active { background: var(--purple); width: 24px; border-radius: 4px; }
-    .step-dot.done   { background: #4ADE80; }
-  </style>
 </head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">BelajarBareng.id</a>
+    <div class="nav-links">
+      <a href="index.html">Kembali ke Beranda</a>
+    </div>
+  </nav>
+
+  <div class="form-box">
+    <h2 style="text-align:center; margin-bottom:5px;">BelajarBareng.id</h2>
+    <p style="text-align:center; font-size:13px; color:#777; margin-bottom:20px;">Platform belajar gratis untuk pelajar Indonesia</p>
+
+    <div class="tab-row">
+      <button class="tab-btn active" id="tabMasuk" onclick="switchTab('masuk')">Masuk</button>
+      <button class="tab-btn" id="tabDaftar" onclick="switchTab('daftar')">Daftar</button>
+    </div>
+
+    <div class="error-box" id="errorMsg"></div>
+
+    <!-- FORM MASUK -->
+    <div id="formMasuk">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="email@kamu.com" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Password" />
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="doLogin()">Masuk</button>
+      <p style="text-align:center; font-size:13px; margin-top:15px;">
+        Belum punya akun? <a href="#" onclick="switchTab('daftar')" style="color:var(--primary-dark); font-weight:bold;">Daftar gratis</a>
+      </p>
+    </div>
+
+    <!-- FORM DAFTAR -->
+    <div id="formDaftar" style="display:none;">
+
+      <div id="step1">
+        <div class="field">
+          <label>Daftar Sebagai</label>
+          <div class="option-row">
+            <div class="option-btn selected" id="btnRoleSiswa" onclick="pilihRole('siswa')">Siswa</div>
+            <div class="option-btn" id="btnRoleGuru" onclick="pilihRole('guru_ortu')">Guru / Orang Tua</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Nama Lengkap</label>
+          <input type="text" id="regNama" placeholder="Nama kamu" />
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="email@kamu.com" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="Minimal 6 karakter" />
+        </div>
+        <button class="btn-primary" style="width:100%;" onclick="goStep2()">Lanjut</button>
+      </div>
+
+      <div id="step2" style="display:none;">
+        <div class="field" id="fieldJenjang">
+          <label>Jenjang</label>
+          <div class="option-row">
+            <div class="option-btn selected" id="btnSMP" onclick="pilihJenjang('SMP')">SMP</div>
+            <div class="option-btn" id="btnSMA" onclick="pilihJenjang('SMA')">SMA</div>
+          </div>
+        </div>
+        <div class="field" id="fieldKelas">
+          <label>Kelas</label>
+          <div class="kelas-grid" id="kelasGrid"></div>
+        </div>
+        <div class="field">
+          <label id="labelSekolah">Asal Sekolah (opsional)</label>
+          <input type="text" id="regSekolah" placeholder="Nama sekolahmu" />
+        </div>
+        <button class="btn-primary" style="width:100%;" onclick="doRegister()" id="btnDaftarFinal">Mulai Belajar</button>
+        <p style="text-align:center; font-size:13px; margin-top:12px;">
+          <a href="#" onclick="backStep1()" style="color:#777;">Kembali</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 BelajarBareng.id - Tugas Pemrograman Web
+  </footer>
+
+  <script>
+    function switchTab(tab) {
+      const isMasuk = tab === 'masuk';
+      document.getElementById('tabMasuk').classList.toggle('active', isMasuk);
+      document.getElementById('tabDaftar').classList.toggle('active', !isMasuk);
+      document.getElementById('formMasuk').style.display = isMasuk ? 'block' : 'none';
+      document.getElementById('formDaftar').style.display = isMasuk ? 'none' : 'block';
+      hideError();
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.classList.add('show');
+    }
+    function hideError() { document.getElementById('errorMsg').classList.remove('show'); }
+
+    // LOGIN
+    function doLogin() {
+      hideError();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email) return showError('Email tidak boleh kosong.');
+      if (!password) return showError('Password tidak boleh kosong.');
+
+      const users = JSON.parse(localStorage.getItem('bb_users') || '[]');
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (!user) return showError('Email atau password salah.');
+
+      localStorage.setItem('bb_current', JSON.stringify(user));
+      window.location.href = (user.role === 'guru_ortu') ? 'dashboard-guru.html' : 'dashboard.html';
+    }
+
+    // ROLE
+    let selectedRole = 'siswa';
+    function pilihRole(role) {
+      selectedRole = role;
+      document.getElementById('btnRoleSiswa').classList.toggle('selected', role === 'siswa');
+      document.getElementById('btnRoleGuru').classList.toggle('selected', role === 'guru_ortu');
+    }
+
+    // STEP 1 -> STEP 2
+    function goStep2() {
+      hideError();
+      const nama = document.getElementById('regNama').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+
+      if (!nama) return showError('Nama tidak boleh kosong.');
+      if (!email) return showError('Email tidak boleh kosong.');
+      if (password.length < 6) return showError('Password minimal 6 karakter.');
+
+      const users = JSON.parse(localStorage.getItem('bb_users') || '[]');
+      if (users.find(u => u.email === email)) return showError('Email sudah terdaftar.');
+
+      window._regData = { nama, email, password, role: selectedRole };
+
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'block';
+
+      const isGuru = selectedRole === 'guru_ortu';
+      document.getElementById('fieldJenjang').style.display = isGuru ? 'none' : 'block';
+      document.getElementById('fieldKelas').style.display = isGuru ? 'none' : 'block';
+      document.getElementById('labelSekolah').textContent = isGuru ? 'Instansi / Sekolah (opsional)' : 'Asal Sekolah (opsional)';
+      document.getElementById('btnDaftarFinal').textContent = isGuru ? 'Daftar Sekarang' : 'Mulai Belajar';
+
+      if (!isGuru) pilihJenjang('SMP');
+    }
+
+    function backStep1() {
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('step1').style.display = 'block';
+    }
+
+    // JENJANG & KELAS
+    let selectedJenjang = 'SMP';
+    let selectedKelas = null;
+    const kelasList = {
+      SMP: ['Kelas 7', 'Kelas 8', 'Kelas 9'],
+      SMA: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+    };
+
+    function pilihJenjang(j) {
+      selectedJenjang = j;
+      selectedKelas = null;
+      document.getElementById('btnSMP').classList.toggle('selected', j === 'SMP');
+      document.getElementById('btnSMA').classList.toggle('selected', j === 'SMA');
+      renderKelas();
+    }
+
+    function renderKelas() {
+      const grid = document.getElementById('kelasGrid');
+      grid.innerHTML = kelasList[selectedJenjang].map(k =>
+        `<div class="option-btn" onclick="pilihKelas(this, '${k}')">${k}</div>`
+      ).join('');
+    }
+
+    function pilihKelas(el, kelas) {
+      document.querySelectorAll('#kelasGrid .option-btn').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedKelas = kelas;
+    }
+
+    // REGISTER FINAL
+    function doRegister() {
+      hideError();
+      const { nama, email, password, role } = window._regData;
+      const isGuru = role === 'guru_ortu';
+
+      if (!isGuru && !selectedKelas) return showError('Pilih kelasmu terlebih dahulu.');
+
+      const sekolah = document.getElementById('regSekolah').value.trim();
+
+      const user = {
+        nama, email, password, role,
+        jenjang: isGuru ? null : selectedJenjang,
+        kelas: isGuru ? null : selectedKelas,
+        sekolah: sekolah || '-',
+        xp: 0,
+        joined: new Date().toISOString(),
+      };
+
+      const users = JSON.parse(localStorage.getItem('bb_users') || '[]');
+      users.push(user);
+      localStorage.setItem('bb_users', JSON.stringify(users));
+      localStorage.setItem('bb_current', JSON.stringify(user));
+
+      window.location.href = isGuru ? 'dashboard-guru.html' : 'dashboard.html';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      if (document.getElementById('formMasuk').style.display !== 'none') doLogin();
+    });
+  </script>
+</body>
 </html>
