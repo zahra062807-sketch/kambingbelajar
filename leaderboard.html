@@ -124,3 +124,54 @@
         <div class="podium-bar">3</div>
       </div>
     </div>
+
+    <!-- ══ POSISIMU ══ -->
+    <div class="my-rank reveal" id="myRank" style="display:none;">
+      <div class="rank-num" id="myRankNum">#—</div>
+      <div class="av" id="myRankAv">P</div>
+      <div class="info">
+        <div class="nm" id="myRankName">Kamu</div>
+        <div class="sb" id="myRankSub">—</div>
+      </div>
+      <div class="xp" id="myRankXp">0 XP</div>
+    </div>
+
+    <!-- ══ FULL LIST ══ -->
+    <div class="lboard reveal">
+      <div class="lboard-head">📋 Peringkat Lengkap</div>
+      <div id="lboardList"></div>
+    </div>
+
+  </div>
+
+  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
+    © 2025 BelajarBareng.id · Dibuat dengan ❤️ untuk pelajar Indonesia 🇮🇩
+  </footer>
+
+  <script>
+    const data = [
+      { rank:1,  nama:'Anindita R.',   sekolah:'SMA 1 Yogyakarta',  avatar:'👑', bg:'rgba(251,191,36,.15)', xp:12450 },
+      { rank:2,  nama:'Bagas Pratama', sekolah:'SMPN 5 Surabaya',   avatar:'🌟', bg:'rgba(148,163,184,.1)', xp:11800 },
+      { rank:3,  nama:'Siti Nurhaliza',sekolah:'SMA 3 Bandung',     avatar:'⚡', bg:'rgba(205,127,50,.1)',  xp:10990 },
+      { rank:4,  nama:'Kevin Santoso', sekolah:'SMA 2 Semarang',    avatar:'🚀', bg:'rgba(124,58,237,.1)',  xp:9750 },
+      { rank:5,  nama:'Putri Melati',  sekolah:'SMPN 2 Medan',      avatar:'🎯', bg:'rgba(59,130,246,.1)',  xp:9310 },
+      { rank:6,  nama:'Farhan Aditya', sekolah:'SMA 1 Malang',      avatar:'🔥', bg:'rgba(236,72,153,.1)',  xp:8890 },
+      { rank:7,  nama:'Nabila Putri',  sekolah:'SMPN 3 Jakarta',    avatar:'💫', bg:'rgba(16,185,129,.1)',  xp:8540 },
+      { rank:8,  nama:'Rizky Ramadhan',sekolah:'SMA 4 Bekasi',      avatar:'⭐', bg:'rgba(251,191,36,.1)',  xp:8120 },
+      { rank:9,  nama:'Aisyah Zahra',  sekolah:'SMPN 1 Bogor',      avatar:'🌈', bg:'rgba(59,130,246,.1)',  xp:7860 },
+      { rank:10, nama:'Dimas Prayoga', sekolah:'SMA 5 Surabaya',    avatar:'🎓', bg:'rgba(124,58,237,.1)',  xp:7500 },
+    ];
+
+    function rankClass(r) { return r === 1 ? 'gold' : r === 2 ? 'silver' : r === 3 ? 'bronze' : ''; }
+
+    document.getElementById('lboardList').innerHTML = data.map(d => `
+      <div class="lboard-row">
+        <div class="rank ${rankClass(d.rank)}">${d.rank}</div>
+        <div class="avatar" style="background:${d.bg}">${d.avatar}</div>
+        <div>
+          <div class="lboard-name">${d.nama}</div>
+          <div class="lboard-sub">${d.sekolah}</div>
+        </div>
+        <div class="lboard-pts">${d.xp.toLocaleString('id-ID')} XP</div>
+      </div>
+    `).join('');
