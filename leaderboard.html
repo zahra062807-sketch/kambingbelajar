@@ -175,3 +175,40 @@
         <div class="lboard-pts">${d.xp.toLocaleString('id-ID')} XP</div>
       </div>
     `).join('');
+
+    // ── Tampilkan posisi user kalau sudah login ──
+    const raw = localStorage.getItem('bb_current');
+    if (raw) {
+      const user = JSON.parse(raw);
+      const firstName = (user.nama || 'Pelajar').split(' ')[0];
+      const xp = parseInt(user.xp || 0);
+
+      // cari posisi kira-kira user di antara data dummy
+      let myRank = data.filter(d => d.xp > xp).length + 1;
+
+      document.getElementById('myRank').style.display = 'flex';
+      document.getElementById('myRankNum').textContent  = '#' + myRank;
+      document.getElementById('myRankAv').textContent   = firstName[0].toUpperCase();
+      document.getElementById('myRankName').textContent = user.nama || 'Pelajar';
+      document.getElementById('myRankSub').textContent  = `${user.sekolah && user.sekolah !== '-' ? user.sekolah : (user.jenjang + ' ' + user.kelas)} · Itu kamu!`;
+      document.getElementById('myRankXp').textContent   = xp.toLocaleString('id-ID') + ' XP';
+    }
+
+    // ── Filter tabs (dummy — sama untuk semua periode di versi ini) ──
+    document.querySelectorAll('.lb-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+  <script src="auth-nav.js"></script>
+</body>
+</html>
