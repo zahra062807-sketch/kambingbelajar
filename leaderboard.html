@@ -3,163 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leaderboard – BelajarBareng.id</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <title>Leaderboard - BelajarBareng.id</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .page-wrap {
-      position: relative; z-index: 1;
-      max-width: 900px; margin: 0 auto;
-      padding: 2.5rem 1.5rem 5rem;
-    }
-
-    .page-head { text-align: center; margin-bottom: 2rem; }
-    .page-head h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: .4rem; }
-    .page-head p  { color: var(--muted); font-size: .9rem; }
-
-    /* ── FILTER TABS ── */
-    .lb-tabs {
-      display: flex; justify-content: center; gap: .6rem; flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
-    .lb-tab {
-      padding: .5rem 1.2rem; border-radius: 999px;
-      font-size: .82rem; font-weight: 700; cursor: pointer;
-      border: 1px solid var(--border); background: var(--card); color: var(--muted);
-      transition: all .2s;
-    }
-    .lb-tab.active { background: var(--purple); border-color: var(--purple); color: #fff; }
-    .lb-tab:hover:not(.active) { border-color: var(--purple); color: var(--text); }
-
-    /* ── PODIUM ── */
-    .podium {
-      display: flex; align-items: flex-end; justify-content: center;
-      gap: 1rem; margin-bottom: 2.5rem;
-    }
-    .podium-item { text-align: center; width: 130px; }
-    .podium-avatar {
-      width: 56px; height: 56px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; margin: 0 auto .6rem;
-      border: 3px solid var(--card);
-    }
-    .podium-item.p1 .podium-avatar { width: 72px; height: 72px; font-size: 1.9rem; border-color: #FBBF24; box-shadow: 0 0 24px rgba(251,191,36,.5); }
-    .podium-item.p2 .podium-avatar { border-color: #94A3B8; }
-    .podium-item.p3 .podium-avatar { border-color: #CD7F32; }
-    .podium-name { font-size: .85rem; font-weight: 700; }
-    .podium-sub  { font-size: .72rem; color: var(--muted); margin-bottom: .4rem; }
-    .podium-bar {
-      border-radius: 14px 14px 0 0;
-      display: flex; align-items: flex-start; justify-content: center;
-      padding-top: .6rem;
-      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem;
-    }
-    .p1 .podium-bar { height: 100px; background: linear-gradient(180deg, rgba(251,191,36,.35), rgba(251,191,36,.1)); color: #FBBF24; }
-    .p2 .podium-bar { height: 70px;  background: linear-gradient(180deg, rgba(148,163,184,.3), rgba(148,163,184,.08)); color: #CBD5E1; }
-    .p3 .podium-bar { height: 50px;  background: linear-gradient(180deg, rgba(205,127,50,.3), rgba(205,127,50,.08)); color: #E0A96D; }
-
-    /* ── MY RANK ── */
-    .my-rank {
-      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(59,130,246,.15));
-      border: 1px solid var(--purple);
-      border-radius: 18px; padding: 1.1rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .my-rank .rank-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--purple-light); width: 36px; text-align:center; }
-    .my-rank .av { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--blue)); display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; flex-shrink:0; }
-    .my-rank .info { flex: 1; }
-    .my-rank .info .nm { font-weight: 700; font-size: .92rem; }
-    .my-rank .info .sb { font-size: .76rem; color: var(--muted); }
-    .my-rank .xp { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--yellow); }
+    .lb-tabs { display:flex; justify-content:center; gap:8px; margin-bottom:25px; flex-wrap:wrap; }
+    .lb-tab { padding:9px 18px; border:2px solid var(--ink); border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; background:#fff; color:var(--ink); }
+    .lb-tab.active { background:var(--ink); border-color:var(--ink); color:#fff; }
+    .my-rank { background:var(--gold-tint); border:2px solid var(--gold); border-radius:var(--radius); padding:16px 20px; display:flex; align-items:center; gap:12px; margin-bottom:22px; box-shadow:var(--shadow-sm); }
+    .my-rank .rank-num { font-weight:700; color:#7A5300; width:32px; text-align:center; font-family:'Baloo 2', sans-serif; }
   </style>
 </head>
 <body>
 
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-
-  <!-- NAV -->
   <nav>
-    <div class="nav-logo">Belajar<span>Bareng</span>.id</div>
+    <div class="nav-logo">BelajarBareng.id</div>
     <div class="nav-links">
       <a href="dashboard.html">Dashboard</a>
       <a href="materi.html">Materi</a>
       <a href="tutor.html">AI Tutor</a>
-      <a href="leaderboard.html">Leaderboard</a>
+      <a href="leaderboard.html" class="btn-nav">Leaderboard</a>
     </div>
   </nav>
 
-  <div class="page-wrap">
-
-    <div class="page-head reveal">
-      <h1>🏆 Leaderboard Nasional</h1>
-      <p>Lihat siapa yang paling rajin belajar minggu ini</p>
-    </div>
+  <div class="section" style="max-width:800px;">
+    <h1 style="text-align:center;">Leaderboard Nasional</h1>
+    <p style="text-align:center; color:#666; margin-bottom:20px;">Lihat siapa yang paling rajin belajar minggu ini</p>
 
     <div class="lb-tabs">
-      <div class="lb-tab active" data-filter="mingguan">Minggu Ini</div>
-      <div class="lb-tab" data-filter="bulanan">Bulan Ini</div>
-      <div class="lb-tab" data-filter="sepanjang">Sepanjang Masa</div>
+      <div class="lb-tab active">Minggu Ini</div>
+      <div class="lb-tab">Bulan Ini</div>
+      <div class="lb-tab">Sepanjang Masa</div>
     </div>
 
-<!-- ══ PODIUM TOP 3 ══ -->
-    <div class="podium reveal">
-      <div class="podium-item p2">
-        <div class="podium-avatar" style="background:rgba(148,163,184,.15);">🌟</div>
-        <div class="podium-name">Bagas P.</div>
-        <div class="podium-sub">SMPN 5 Surabaya</div>
-        <div class="podium-bar">2</div>
+    <div class="my-rank" id="myRank" style="display:none;">
+      <div class="rank-num" id="myRankNum">#-</div>
+      <div class="avatar" id="myRankAv">P</div>
+      <div style="flex:1;">
+        <div style="font-weight:bold;" id="myRankName">Kamu</div>
+        <div style="font-size:12px; color:#666;" id="myRankSub">-</div>
       </div>
-      <div class="podium-item p1">
-        <div class="podium-avatar" style="background:rgba(251,191,36,.15);">👑</div>
-        <div class="podium-name">Anindita R.</div>
-        <div class="podium-sub">SMA 1 Yogyakarta</div>
-        <div class="podium-bar">1</div>
-      </div>
-      <div class="podium-item p3">
-        <div class="podium-avatar" style="background:rgba(205,127,50,.15);">⚡</div>
-        <div class="podium-name">Siti N.</div>
-        <div class="podium-sub">SMA 3 Bandung</div>
-        <div class="podium-bar">3</div>
-      </div>
+      <div style="font-weight:bold; color:var(--primary-dark);" id="myRankXp">0 XP</div>
     </div>
 
-    <!-- ══ POSISIMU ══ -->
-    <div class="my-rank reveal" id="myRank" style="display:none;">
-      <div class="rank-num" id="myRankNum">#—</div>
-      <div class="av" id="myRankAv">P</div>
-      <div class="info">
-        <div class="nm" id="myRankName">Kamu</div>
-        <div class="sb" id="myRankSub">—</div>
-      </div>
-      <div class="xp" id="myRankXp">0 XP</div>
-    </div>
-
-    <!-- ══ FULL LIST ══ -->
-    <div class="lboard reveal">
-      <div class="lboard-head">📋 Peringkat Lengkap</div>
+    <div class="lboard">
+      <div class="lboard-head">Peringkat Lengkap</div>
       <div id="lboardList"></div>
     </div>
-
   </div>
 
-  <footer style="text-align:center; padding:2rem 1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.82rem; position:relative; z-index:1;">
-    © 2025 BelajarBareng.id · Dibuat dengan ❤️ untuk pelajar Indonesia 🇮🇩
-  </footer>
+  <footer>&copy; 2025 BelajarBareng.id - Tugas Pemrograman Web</footer>
 
   <script>
     const data = [
-      { rank:1,  nama:'Anindita R.',   sekolah:'SMA 1 Yogyakarta',  avatar:'👑', bg:'rgba(251,191,36,.15)', xp:12450 },
-      { rank:2,  nama:'Bagas Pratama', sekolah:'SMPN 5 Surabaya',   avatar:'🌟', bg:'rgba(148,163,184,.1)', xp:11800 },
-      { rank:3,  nama:'Siti Nurhaliza',sekolah:'SMA 3 Bandung',     avatar:'⚡', bg:'rgba(205,127,50,.1)',  xp:10990 },
-      { rank:4,  nama:'Kevin Santoso', sekolah:'SMA 2 Semarang',    avatar:'🚀', bg:'rgba(124,58,237,.1)',  xp:9750 },
-      { rank:5,  nama:'Putri Melati',  sekolah:'SMPN 2 Medan',      avatar:'🎯', bg:'rgba(59,130,246,.1)',  xp:9310 },
-      { rank:6,  nama:'Farhan Aditya', sekolah:'SMA 1 Malang',      avatar:'🔥', bg:'rgba(236,72,153,.1)',  xp:8890 },
-      { rank:7,  nama:'Nabila Putri',  sekolah:'SMPN 3 Jakarta',    avatar:'💫', bg:'rgba(16,185,129,.1)',  xp:8540 },
-      { rank:8,  nama:'Rizky Ramadhan',sekolah:'SMA 4 Bekasi',      avatar:'⭐', bg:'rgba(251,191,36,.1)',  xp:8120 },
-      { rank:9,  nama:'Aisyah Zahra',  sekolah:'SMPN 1 Bogor',      avatar:'🌈', bg:'rgba(59,130,246,.1)',  xp:7860 },
-      { rank:10, nama:'Dimas Prayoga', sekolah:'SMA 5 Surabaya',    avatar:'🎓', bg:'rgba(124,58,237,.1)',  xp:7500 },
+      { rank:1, nama:'Anindita R.', sekolah:'SMA 1 Yogyakarta', xp:12450 },
+      { rank:2, nama:'Bagas Pratama', sekolah:'SMPN 5 Surabaya', xp:11800 },
+      { rank:3, nama:'Siti Nurhaliza', sekolah:'SMA 3 Bandung', xp:10990 },
+      { rank:4, nama:'Kevin Santoso', sekolah:'SMA 2 Semarang', xp:9750 },
+      { rank:5, nama:'Putri Melati', sekolah:'SMPN 2 Medan', xp:9310 },
+      { rank:6, nama:'Farhan Aditya', sekolah:'SMA 1 Malang', xp:8890 },
+      { rank:7, nama:'Nabila Putri', sekolah:'SMPN 3 Jakarta', xp:8540 },
+      { rank:8, nama:'Rizky Ramadhan', sekolah:'SMA 4 Bekasi', xp:8120 },
+      { rank:9, nama:'Aisyah Zahra', sekolah:'SMPN 1 Bogor', xp:7860 },
+      { rank:10, nama:'Dimas Prayoga', sekolah:'SMA 5 Surabaya', xp:7500 },
     ];
 
     function rankClass(r) { return r === 1 ? 'gold' : r === 2 ? 'silver' : r === 3 ? 'bronze' : ''; }
@@ -167,7 +72,7 @@
     document.getElementById('lboardList').innerHTML = data.map(d => `
       <div class="lboard-row">
         <div class="rank ${rankClass(d.rank)}">${d.rank}</div>
-        <div class="avatar" style="background:${d.bg}">${d.avatar}</div>
+        <div class="avatar">${d.nama[0]}</div>
         <div>
           <div class="lboard-name">${d.nama}</div>
           <div class="lboard-sub">${d.sekolah}</div>
@@ -176,38 +81,27 @@
       </div>
     `).join('');
 
-    // ── Tampilkan posisi user kalau sudah login ──
     const raw = localStorage.getItem('bb_current');
     if (raw) {
       const user = JSON.parse(raw);
       const firstName = (user.nama || 'Pelajar').split(' ')[0];
       const xp = parseInt(user.xp || 0);
-
-      // cari posisi kira-kira user di antara data dummy
       let myRank = data.filter(d => d.xp > xp).length + 1;
 
       document.getElementById('myRank').style.display = 'flex';
-      document.getElementById('myRankNum').textContent  = '#' + myRank;
-      document.getElementById('myRankAv').textContent   = firstName[0].toUpperCase();
+      document.getElementById('myRankNum').textContent = '#' + myRank;
+      document.getElementById('myRankAv').textContent = firstName[0].toUpperCase();
       document.getElementById('myRankName').textContent = user.nama || 'Pelajar';
-      document.getElementById('myRankSub').textContent  = `${user.sekolah && user.sekolah !== '-' ? user.sekolah : (user.jenjang + ' ' + user.kelas)} · Itu kamu!`;
-      document.getElementById('myRankXp').textContent   = xp.toLocaleString('id-ID') + ' XP';
+      document.getElementById('myRankSub').textContent = (user.sekolah && user.sekolah !== '-' ? user.sekolah : (user.jenjang + ' ' + user.kelas)) + ' - Itu kamu!';
+      document.getElementById('myRankXp').textContent = xp.toLocaleString('id-ID') + ' XP';
     }
 
-    // ── Filter tabs (dummy — sama untuk semua periode di versi ini) ──
     document.querySelectorAll('.lb-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
       });
     });
-
-    // ── Scroll reveal ──
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => io.observe(el));
   </script>
   <script src="auth-nav.js"></script>
 </body>
